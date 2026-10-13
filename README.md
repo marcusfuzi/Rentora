@@ -1,106 +1,120 @@
-[README.md](https://github.com/user-attachments/files/33394564/README.md)
-# RENTORA — Smart Rental Marketplace
+[README.md](https://github.com/user-attachments/files/33394673/README.md)
+<!-- Animated banner: GitHub renders these hosted SVG images when viewing the README online. -->
+<div align="center">
 
-<p align="center">
-  <strong>Rent It. Buy It. Choose Smarter.</strong><br>
-  A unified marketplace for renting products, buying products, and making informed purchase decisions.
-</p>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:101828,45:2563EB,100:06B6D4&height=220&section=header&text=RENTORA&fontSize=58&fontColor=FFFFFF&fontAlignY=38&desc=Smart%20Rental%20and%20Buying%20Marketplace&descAlignY=60&descSize=18" width="100%" alt="Rentora animated header banner" />
 
-<p align="center">
-  <img alt="Project Status" src="https://img.shields.io/badge/Status-In%20Development-orange">
-  <img alt="Project Type" src="https://img.shields.io/badge/Project-B.Tech%20CSE-blue">
-  <img alt="Backend" src="https://img.shields.io/badge/Backend-Node.js%20%7C%20Express-green">
-  <img alt="Database" src="https://img.shields.io/badge/Database-MongoDB-brightgreen">
-</p>
+<a href="https://git.io/typing-svg">
+  <img src="https://readme-typing-svg.demolab.com?font=Inter&weight=600&size=21&pause=1100&color=38BDF8&center=true&vCenter=true&width=720&lines=Rent+it.+Buy+it.+Choose+smarter.;One+marketplace.+More+informed+decisions.;Compare+renting+with+buying." alt="Animated typing text: Rent it. Buy it. Choose smarter." />
+</a>
+
+<br/>
+
+<img src="https://img.shields.io/badge/Project-B.Tech%20CSE%20Mini%20Project-2563eb?style=for-the-badge" alt="B.Tech CSE mini project" />
+<img src="https://img.shields.io/badge/Frontend-HTML%20%7C%20CSS%20%7C%20JavaScript-f97316?style=for-the-badge" alt="Frontend technologies" />
+<img src="https://img.shields.io/badge/Backend-Node.js%20%7C%20Express-16a34a?style=for-the-badge" alt="Backend technologies" />
+<img src="https://img.shields.io/badge/Database-MongoDB-15803d?style=for-the-badge" alt="MongoDB database" />
+
+</div>
 
 ---
 
-## 📖 About Rentora
+## 🌐 About the Project
 
-**Rentora** is a smart rental and buying marketplace designed to connect customers and sellers through one convenient platform. Customers can explore products available for rent or purchase, while sellers can list items and reach potential customers.
+**Rentora** is a web-based rental, buying, and price-comparison marketplace designed to connect **customers** with **sellers and product owners** through one platform.
 
-The project focuses on helping people choose between renting and buying based on their needs, budget, and intended usage duration. It also aims to make product discovery more transparent through product-price comparison and a **Try Before You Buy** approach.
+Some products are needed only for a short period, making a purchase unnecessary for certain users. Rentora aims to let customers explore rental and purchase options, calculate rental costs for their intended duration, and compare matching product prices across supported shopping platforms such as **Amazon** and **Flipkart**.
 
-> **Our vision:** Make access to products more flexible, affordable, and informed.
+> **Our vision:** Help people access the products they need and make more informed rent-or-buy decisions.
 
-## ✨ Key Features
+## ✨ Core Features
 
-### 🛍️ Rent & Buy Marketplace
-- Browse products available for rent, sale, or both.
-- Separate customer and seller account flows.
-- Seller product listings with descriptions, pricing, and availability.
-- Product categories to make discovery easier.
+<table>
+  <tr>
+    <td width="50%">
+      <h3>🛍️ Rent & Buy</h3>
+      Explore products available for rent or sale in one marketplace.
+    </td>
+    <td width="50%">
+      <h3>👥 Separate User Modules</h3>
+      Customer and seller modules for product discovery and listing management.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <h3>🔎 Product Search</h3>
+      Search for products and review relevant product and seller details.
+    </td>
+    <td width="50%">
+      <h3>💸 Online Price Comparison</h3>
+      Compare matching products across supported platforms, including Amazon and Flipkart.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <h3>🧮 Smart Rent vs. Buy</h3>
+      Estimate rental cost for a selected duration and compare it with available purchase prices.
+    </td>
+    <td width="50%">
+      <h3>📅 Rental Information</h3>
+      Present rental duration, security deposit, return information, and product availability.
+    </td>
+  </tr>
+</table>
 
-### 🧠 Smart Rent-vs-Buy Guidance
-- Compare estimated rental expenses with the purchase price.
-- Consider the intended usage duration when evaluating costs.
-- Help users understand when renting or buying may be more economical.
+## 🧠 How Smart Rent vs. Buy Works
 
-### 🔎 Product Price Comparison
-- Designed to compare matching product models and variants across supported shopping platforms.
-- Show available external purchase offers alongside matching Rentora sale listings.
-- Display price-source and last-updated details wherever data is available.
-- Architecture can be extended to authorized APIs or other permitted price-data providers.
+Rentora estimates the total rental cost for the period a customer needs the product.
 
-### 🔄 Try Before You Buy
-Rent selected products before committing to a purchase. This can help customers assess suitability for real-world needs—for example, cameras, laptops, projectors, gaming consoles, tools, and speakers.
+\[
+\text{Total Rental Cost} = \text{Rental Price per Day} \times \text{Number of Days}
+\]
 
-### 🛡️ Trust & Rental Transparency
-- Separate customer and seller roles.
-- Planned KYC and seller-verification workflows.
-- Rental terms covering deposits, due dates, late fees, returns, and damage policies.
-- Rental-request tracking and fraud-prevention improvements.
+The estimated rental cost can then be compared with available purchase prices. Renting may suit short-term use, while buying may be more economical for longer-term use. Rentora presents the cost information to support the customer's final decision.
 
-*Feature availability depends on the current implementation. Planned integrations are described as future work below.*
+## 🔄 How Rentora Works
+
+```mermaid
+flowchart TD
+    A([Open Rentora]) --> B[Search for a Product]
+    B --> C[View Product Details]
+    C --> D{Choose an Option}
+    D --> E[Rent]
+    D --> F[Buy]
+    E --> G[Calculate Rental Cost]
+    F --> H[Compare Supported Online Prices]
+    G --> I[Review Available Options]
+    H --> I
+    I --> J([Make an Informed Decision])
+```
 
 ## 🧰 Technology Stack
 
-| Layer | Technologies |
-|---|---|
-| Frontend | HTML, CSS, JavaScript |
-| Backend | Node.js, Express.js |
-| Database | MongoDB |
-| Database modeling | Mongoose |
-| Development tools | Visual Studio Code, Git, GitHub |
+<div align="center">
 
-## 🗂️ Project Structure
+| Layer | Technology |
+|:---|:---|
+| **Frontend** | HTML, CSS, JavaScript |
+| **Backend** | Node.js, Express.js |
+| **Database** | MongoDB |
+| **Integration** | REST APIs and supported price-retrieval APIs / web services |
 
-The repository may evolve as development continues. A typical layout is:
+</div>
 
-```text
-Rentora/
-├── backend/
-│   ├── models/
-│   │   ├── user.js
-│   │   └── rental.js
-│   ├── routes/
-│   │   ├── auth.js
-│   │   ├── products.js
-│   │   └── rentals.js
-│   ├── .env                 # Local only — do not commit
-│   ├── package.json
-│   └── server.js
-├── index.html
-├── style.css
-├── script.js
-└── README.md
-```
+## 🚀 Getting Started
 
-Update this tree if your actual filenames or folders differ.
-
-## ⚙️ Getting Started
+Use these general steps to run the project locally. File names, scripts, and environment-variable names may differ depending on your repository's implementation.
 
 ### Prerequisites
 
-Install the following:
 - [Node.js](https://nodejs.org/)
-- [MongoDB](https://www.mongodb.com/) — local instance or a MongoDB Atlas database
+- [MongoDB](https://www.mongodb.com/)
 - [Git](https://git-scm.com/)
 - [Visual Studio Code](https://code.visualstudio.com/) (recommended)
 
 ### 1. Clone the repository
 
-Replace the placeholder URL with your GitHub repository URL.
+Replace `YOUR_GITHUB_REPOSITORY_URL` with your repository's actual URL.
 
 ```bash
 git clone YOUR_GITHUB_REPOSITORY_URL
@@ -109,84 +123,98 @@ cd Rentora
 
 ### 2. Install backend dependencies
 
+If your backend is inside a `backend` folder:
+
 ```bash
 cd backend
 npm install
 ```
 
-### 3. Configure environment variables
+### 3. Configure your environment
 
-Create a `.env` file inside `backend/` and set the variables expected by your server:
+Create a `.env` file using the variable names expected by your backend code. For example:
 
 ```env
 PORT=5000
 MONGODB_URI=mongodb://127.0.0.1:27017/rentora
-JWT_SECRET=replace_with_a_long_random_secret
 ```
 
-**Important:** These names are examples. Match them to the variables your code actually reads. Keep `.env` out of version control and never publish real credentials.
+Add any additional variables required by your implementation. **Never commit secrets, passwords, or production credentials to GitHub.**
 
 ### 4. Start the backend
 
-If `backend/package.json` defines a start script:
+Use the script defined in your `package.json`, for example:
 
 ```bash
 npm start
 ```
 
-Otherwise, if the entry point is `server.js`:
+If no start script exists and the server entry point is `server.js`, you can use:
 
 ```bash
 node server.js
 ```
 
-The local backend is expected at `http://localhost:5000` when configured with the port above.
-
 ### 5. Open the frontend
 
-Open `index.html` in a browser, or use the **Live Server** extension in VS Code. Confirm that the frontend API base URL matches your backend address.
+Open the project's `index.html` in a browser or run it using the Live Server extension in Visual Studio Code. Make sure the frontend API URL matches the backend address.
 
-## 🔐 Security Notes
+## 🗺️ Project Roadmap
 
-- Do not commit `.env`, passwords, database credentials, or signing secrets.
-- Validate and sanitize user input on the server.
-- Enforce authorization on protected routes; hiding frontend controls is not sufficient.
-- Use secure password hashing and properly managed authentication tokens if authentication is implemented.
-- Integrate KYC, payments, and external price feeds only through appropriate providers and secure workflows.
+The following items are part of the proposed future scope and should be marked complete only when implemented.
 
-## 🛣️ Roadmap
+- [ ] Customer and seller registration and login
+- [ ] Product listing, search, and availability management
+- [ ] Rental and purchase workflows
+- [ ] Rental duration and cost calculation
+- [ ] Product matching and external price comparison
+- [ ] Real-time price updates and additional e-commerce integrations
+- [ ] Online payments
+- [ ] KYC and identity verification
+- [ ] Digital rental agreements and delivery tracking
+- [ ] Automated late-fee and damage management
+- [ ] Advanced fraud detection
+- [ ] AI-based personalized recommendations
+- [ ] Mobile application
 
-- [ ] Complete customer and seller registration and authentication.
-- [ ] Finish product listing, browsing, and rental-request workflows.
-- [ ] Add rental duration, deposits, return dates, and configurable late-fee rules.
-- [ ] Implement matching by product model and variant.
-- [ ] Integrate authorized external price sources.
-- [ ] Add KYC and seller-verification integration.
-- [ ] Add reminders and overdue-rental escalation.
-- [ ] Improve responsive design, accessibility, and automated testing.
+## 🎯 Project Objectives
 
-## 🎯 Project Objective
+- Bring rental and purchase options together in a centralized platform.
+- Connect customers with sellers and product owners.
+- Help users compare rental expenses with purchase prices.
+- Make supported online product-price comparisons easier.
+- Give sellers a platform to list products for rental or sale.
+- Support practical, cost-conscious product decisions.
 
-Rentora aims to bring renting and buying together in one marketplace. By presenting rental costs, purchase options, and comparable prices in one place, it seeks to help customers make practical decisions while giving sellers another way to reach potential renters and buyers.
+## 📚 References & Inspiration
+
+- [Rentomojo](https://www.rentomojo.com/) — Online rental platform.
+- [Buyhatke](https://www.buyhatke.com/) — Online shopping price comparison and price-tracking platform.
+
+These platforms are references for the project's general concept; Rentora is an independent academic project.
 
 ## 🎓 Academic Project
 
-- **Project:** RENTORA — Smart Rental Marketplace
-- **Domain:** Web Development / E-Commerce
-- **Type:** B.Tech CSE Mini Project
-- **Academic Session:** 2026–2027
+| Detail | Information |
+|:---|:---|
+| **Project Name** | RENTORA — Smart Rental and Buying Marketplace |
+| **Project Type** | Web-based rental, buying, and price-comparison marketplace |
+| **Domain** | Web Development / E-Commerce |
+| **Academic Session** | 2026–2027 |
 
-## 🤝 Contributing
+## 🔮 Future Vision
 
-This project is currently being developed as an academic project. Suggestions and improvements are welcome. For substantial changes, create a branch and submit a pull request with a clear description of the change.
-
-## 📄 License
-
-No license has been specified yet. Add a `LICENSE` file before presenting the project as open source.
+Rentora aims to make product access more convenient and decision-oriented by combining rental services, buying options, rental-cost estimation, and supported online price comparisons in one place.
 
 ---
 
-<p align="center">
-  <strong>RENTORA</strong><br>
-  <em>Rent smarter. Buy better.</em>
-</p>
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:06B6D4,50:2563EB,100:101828&height=120&section=footer" width="100%" alt="Decorative footer banner" />
+
+### **RENTORA**
+*Rent smarter. Buy better.*
+
+<sub>Built with 💙 as a B.Tech CSE academic project.</sub>
+
+</div>
