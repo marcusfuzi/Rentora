@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Rentora - Rent, Buy & Compare</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <a
+        href="index.html"
+        class="logo"
+    >
+        <span>Rent</span>ora
+    </a>
+
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="#categories">
+            Categories
+        </a>
+
+        <a href="owner.html">
+            List Equipment
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="badge">
+            RENT • BUY • COMPARE
+        </div>
+
+
+        <h1>
+
+            Find Equipment.<br>
+
+            <span>Choose Smarter.</span>
+
+        </h1>
+
+
+        <p class="hero-text">
+
+            Rent equipment from local owners,
+            buy quality products, and compare
+            purchase prices across platforms.
+
+        </p>
+
+
+        <div class="search-box">
+
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="Search camera, drone, laptop..."
+                onkeydown="
+                    if(event.key === 'Enter')
+                    searchProducts()
+                "
+            >
+
+
+            <button
+                onclick="searchProducts()"
+            >
+                Search
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<section
+    id="categories"
+    class="section"
+>
+
+    <div class="section-heading">
+
+        <p>EXPLORE</p>
+
+        <h2>
+            Popular Categories
+        </h2>
+
+    </div>
+
+
+    <div class="categories">
+
+        <button
+            onclick="categorySearch('Camera')"
+        >
+            📷 Camera
+        </button>
+
+
+        <button
+            onclick="categorySearch('Drone')"
+        >
+            🚁 Drone
+        </button>
+
+
+        <button
+            onclick="categorySearch('Laptop')"
+        >
+            💻 Laptop
+        </button>
+
+
+        <button
+            onclick="categorySearch('Projector')"
+        >
+            📽️ Projector
+        </button>
+
+
+        <button
+            onclick="categorySearch('Gaming')"
+        >
+            🎮 Gaming
+        </button>
+
+
+        <button
+            onclick="categorySearch('Audio')"
+        >
+            🎧 Audio
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<section class="section">
+
+    <div class="section-heading">
+
+        <p>
+            RENTORA MARKETPLACE
+        </p>
+
+        <h2>
+            Available Equipment
+        </h2>
+
+    </div>
+
+
+    <div
+        id="productGrid"
+        class="product-grid"
+    >
+
+        <div class="loading">
+            Loading equipment...
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<section class="compare-banner">
+
+    <div>
+
+        <p>
+            SMART PURCHASE COMPARISON
+        </p>
+
+
+        <h2>
+            Compare before you buy.
+        </h2>
+
+
+        <p>
+
+            Rentora can compare the same
+            product model and variant across
+            supported purchase platforms.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<footer>
+
+    <a
+        href="index.html"
+        class="logo"
+    >
+        <span>Rent</span>ora
+    </a>
+
+
+    <p>
+        Rental + Buy/Sell + Purchase Price Comparison
+    </p>
+
+</footer>
+
+
+
+<script src="app.js"></script>
+
+</body>
+
+</html>

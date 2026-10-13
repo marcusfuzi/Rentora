@@ -1,0 +1,132 @@
+[
+  {
+    "id": 1,
+    "name": "Sony Alpha A7 IV",
+    "brand": "Sony",
+    "model": "A7 IV",
+    "variant": "33MP Body Only",
+    "category": "Camera",
+    "condition": "Used - Excellent",
+    "listingType": "rent",
+    "rentPrice": 1500,
+    "salePrice": null,
+    "deposit": 10000,
+    "owner": "Rahul Camera Store",
+    "location": "Tanakpur",
+    "description": "Professional full-frame mirrorless camera available for daily rental.",
+    "image": "",
+    "verifiedSeller": true,
+    "externalPrices": [
+      {
+        "platform": "Amazon",
+        "price": 159999,
+        "updated": "Demo data"
+      },
+      {
+        "platform": "Flipkart",
+        "price": 162499,
+        "updated": "Demo data"
+      },
+      {
+        "platform": "Croma",
+        "price": 164990,
+        "updated": "Demo data"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Canon EOS R10",
+    "brand": "Canon",
+    "model": "EOS R10",
+    "variant": "24MP + 18-45mm",
+    "category": "Camera",
+    "condition": "Used - Good",
+    "listingType": "sell",
+    "rentPrice": null,
+    "salePrice": 72000,
+    "deposit": null,
+    "owner": "Aman Electronics",
+    "location": "Tanakpur",
+    "description": "Canon EOS R10 with 18-45mm kit lens in good condition.",
+    "image": "",
+    "verifiedSeller": true,
+    "externalPrices": [
+      {
+        "platform": "Amazon",
+        "price": 74999,
+        "updated": "Demo data"
+      },
+      {
+        "platform": "Flipkart",
+        "price": 76990,
+        "updated": "Demo data"
+      },
+      {
+        "platform": "Croma",
+        "price": 78990,
+        "updated": "Demo data"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "DJI Mini 4 Pro",
+    "brand": "DJI",
+    "model": "Mini 4 Pro",
+    "variant": "Fly More Combo",
+    "category": "Drone",
+    "condition": "Used - Excellent",
+    "listingType": "rent",
+    "rentPrice": 2000,
+    "salePrice": null,
+    "deposit": 15000,
+    "owner": "Drone Hub",
+    "location": "Tanakpur",
+    "description": "Compact professional drone available for rental.",
+    "image": "",
+    "verifiedSeller": true,
+    "externalPrices": [
+      {
+        "platform": "Amazon",
+        "price": 109999,
+        "updated": "Demo data"
+      },
+      {
+        "platform": "Flipkart",
+        "price": 112499,
+        "updated": "Demo data"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Sony WH-1000XM5",
+    "brand": "Sony",
+    "model": "WH-1000XM5",
+    "variant": "Wireless Noise Cancelling",
+    "category": "Audio",
+    "condition": "Used - Excellent",
+    "listingType": "sell",
+    "rentPrice": null,
+    "salePrice": 19000,
+    "deposit": null,
+    "owner": "Tech Point",
+    "location": "Tanakpur",
+    "description": "Premium wireless noise cancelling headphones.",
+    "image": "",
+    "verifiedSeller": true,
+    "externalPrices": [
+      {
+        "platform": "Amazon",
+        "price": 29990,
+        "updated": "Demo data"
+      },
+      {
+        "platform": "Flipkart",
+        "price": 28999,
+        "updated": "Demo data"
+      }
+    ]
+  }
+]

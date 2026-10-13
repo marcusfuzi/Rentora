@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Rentora - List Equipment
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <a
+        href="index.html"
+        class="logo"
+    >
+        <span>Rent</span>ora
+    </a>
+
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="owner.html">
+            List Equipment
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<section class="form-section">
+
+    <div class="form-container">
+
+        <div class="badge">
+            OWNER MARKETPLACE
+        </div>
+
+
+        <h1>
+            List Your Equipment
+        </h1>
+
+
+        <p class="form-subtitle">
+
+            Add your equipment to Rentora
+            and choose whether you want to
+            rent it or sell it.
+
+        </p>
+
+
+
+        <form id="ownerForm">
+
+
+            <h3>
+                Equipment Details
+            </h3>
+
+
+            <div class="form-grid">
+
+
+                <div class="input-group">
+
+                    <label>
+                        Equipment Name *
+                    </label>
+
+                    <input
+                        id="name"
+                        type="text"
+                        placeholder="Sony Alpha A7 IV"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div class="input-group">
+
+                    <label>
+                        Brand *
+                    </label>
+
+                    <input
+                        id="brand"
+                        type="text"
+                        placeholder="Sony"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div class="input-group">
+
+                    <label>
+                        Model *
+                    </label>
+
+                    <input
+                        id="model"
+                        type="text"
+                        placeholder="A7 IV"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div class="input-group">
+
+                    <label>
+                        Variant *
+                    </label>
+
+                    <input
+                        id="variant"
+                        type="text"
+                        placeholder="33MP Body Only"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div class="input-group">
+
+                    <label>
+                        Category
+                    </label>
+
+                    <select id="category">
+
+                        <option>
+                            Camera
+                        </option>
+
+                        <option>
+                            Drone
+                        </option>
+
+                        <option>
+                            Laptop
+                        </option>
+
+                        <option>
+                            Projector
+                        </option>
+
+                        <option>
+                            Gaming
+                        </option>
+
+                        <option>
+                            Audio
+                        </option>
+
+                        <option>
+                            Vehicle
+                        </option>
+
+                        <option>
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <div class="input-group">
+
+                    <label>
+                        Condition
+                    </label>
+
+                    <select id="condition">
+
+                        <option>
+                            New
+                        </option>
+
+                        <option>
+                            Used - Excellent
+                        </option>
+
+                        <option>
+                            Used - Good
+                        </option>
+
+                        <option>
+                            Used - Fair
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+
+            <h3 class="form-heading">
+                Listing Type
+            </h3>
+
+
+
+            <div class="listing-types">
+
+
+                <label class="listing-option">
+
+                    <input
+                        type="radio"
+                        name="listingType"
+                        value="rent"
+                        checked
+                    >
+
+
+                    <div>
+
+                        <strong>
+                            🏠 Rent Equipment
+                        </strong>
+
+                        <span>
+                            Users can rent this equipment.
+                        </span>
+
+                    </div>
+
+                </label>
+
+
+
+                <label class="listing-option">
+
+                    <input
+                        type="radio"
+                        name="listingType"
+                        value="sell"
+                    >
+
+
+                    <div>
+
+                        <strong>
+                            🛒 Sell Equipment
+                        </strong>
+
+                        <span>
+                            Users can purchase this equipment.
+                        </span>
+
+                    </div>
+
+                </label>
+
+            </div>
+
+
+
+            <!-- RENT -->
+
+            <div
+                id="rentFields"
+                class="price-box"
+            >
+
+                <div class="form-grid">
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Rent Price / Day *
+                        </label>
+
+                        <input
+                            id="rentPrice"
+                            type="number"
+                            min="1"
+                            placeholder="1500"
+                        >
+
+                    </div>
+
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Security Deposit
+                        </label>
+
+                        <input
+                            id="deposit"
+                            type="number"
+                            min="0"
+                            placeholder="10000"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SELL -->
+
+            <div
+                id="sellFields"
+                class="price-box hidden"
+            >
+
+                <div class="input-group">
+
+                    <label>
+                        Selling Price *
+                    </label>
+
+                    <input
+                        id="salePrice"
+                        type="number"
+                        min="1"
+                        placeholder="75000"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <h3 class="form-heading">
+                Owner Details
+            </h3>
+
+
+
+            <div class="form-grid">
+
+
+                <div class="input-group">
+
+                    <label>
+                        Owner / Shop Name *
+                    </label>
+
+                    <input
+                        id="owner"
+                        type="text"
+                        placeholder="Your name or shop"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div class="input-group">
+
+                    <label>
+                        Location
+                    </label>
+
+                    <input
+                        id="location"
+                        type="text"
+                        placeholder="Tanakpur"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <div class="input-group">
+
+                <label>
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    rows="5"
+                    placeholder="Describe your equipment..."
+                ></textarea>
+
+            </div>
+
+
+
+            <div class="input-group">
+
+                <label>
+                    Image URL
+                </label>
+
+                <input
+                    id="image"
+                    type="url"
+                    placeholder="https://example.com/image.jpg"
+                >
+
+            </div>
+
+
+
+            <button
+                type="submit"
+                class="submit-btn"
+            >
+                List Equipment
+            </button>
+
+
+
+            <div id="formMessage"></div>
+
+
+        </form>
+
+    </div>
+
+</section>
+
+
+
+<script src="app.js"></script>
+
+</body>
+
+</html>
