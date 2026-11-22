@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RENTORA – Smart Rental & Buying Marketplace</title>
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/marketplace.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Three.js & GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="nav-brand">
+        <div class="brand-logo-icon">
+          <i class="fas fa-cube"></i>
+        </div>
+        <span>RENT<span class="gradient-text">ORA</span></span>
+      </a>
+
+      <button class="mobile-nav-toggle" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/index.html" class="nav-link active">Home</a></li>
+        <li><a href="/marketplace.html" class="nav-link">Marketplace</a></li>
+        <li><a href="/calculator.html" class="nav-link">Rent vs Buy</a></li>
+        <li><a href="/my-rentals.html" class="nav-link">My Rentals</a></li>
+      </ul>
+
+      <div class="nav-actions" id="nav-actions">
+        <!-- Rendered dynamically by main.js with theme toggle & user auth -->
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================================================================
+       SECTION 1: HERO WITH 3D CANVAS & RENT / BUY INTERACTIVE SEARCH
+  =================================================================== -->
+  <section class="hero-section" style="position: relative; min-height: 92vh; display: flex; align-items: center; overflow: hidden; padding: 3.5rem 0 4.5rem;">
+    <!-- 3D Canvas Background & Floating Gadgets -->
+    <canvas id="hero-3d-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: auto;"></canvas>
+
+    <div class="container" style="position: relative; z-index: 2; pointer-events: none;">
+      <div class="hero-content" style="max-width: 720px; pointer-events: auto;">
+        <div class="badge badge-both" style="margin-bottom: 1.2rem; font-size: 0.85rem; padding: 0.4rem 1.1rem;">
+          <i class="fas fa-bolt"></i> Smart Rental & Buying Marketplace
+        </div>
+
+        <h1 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 5vw, 4.2rem); font-weight: 800; line-height: 1.12; margin-bottom: 1.2rem; color: #fff;">
+          Rent Gear. Buy Direct.<br />
+          <span class="gradient-text">Compare Lowest Prices.</span>
+        </h1>
+
+        <p style="font-size: 1.15rem; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.6; max-width: 620px;">
+          RENTORA combines verified individual product rentals, peer seller sales, and Buyhatke-inspired price matching across Amazon, Flipkart, Croma, and Reliance Digital.
+        </p>
+
+        <!-- Interactive Rent vs Buy Search Box -->
+        <div class="glass-panel" style="padding: 1.5rem; border-radius: var(--radius-lg); margin-bottom: 2rem; border: 1.5px solid var(--border-glow); box-shadow: var(--shadow-neon);">
+          <!-- Rent / Buy Toggle Tabs -->
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-light); padding-bottom: 0.75rem;">
+            <button type="button" id="hero-tab-rent" class="btn btn-primary btn-sm active" style="border-radius: var(--radius-sm); font-weight: 700;">
+              <i class="fas fa-calendar-alt"></i> Rent Equipment
+            </button>
+            <button type="button" id="hero-tab-buy" class="btn btn-secondary btn-sm" style="border-radius: var(--radius-sm); font-weight: 700;">
+              <i class="fas fa-tags"></i> Buy & Price Compare
+            </button>
+          </div>
+
+          <!-- Inputs Row -->
+          <div style="display: grid; grid-template-columns: 1fr 140px 140px auto; gap: 0.6rem; align-items: center;" class="hero-search-inputs-grid">
+            <div style="position: relative;">
+              <i class="fas fa-search" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-dim); font-size: 0.9rem;"></i>
+              <input
+                type="text"
+                id="hero-search-input"
+                class="form-control"
+                placeholder="Search gear for rent (cameras, laptops, consoles, drones)..."
+                style="padding-left: 2.5rem; height: 46px; font-size: 0.9rem;"
+              />
+            </div>
+
+            <select id="hero-category-select" class="form-control" style="height: 46px; font-size: 0.85rem;">
+              <option value="All">All Categories</option>
+              <option value="Cameras & Lenses">Cameras</option>
+              <option value="Laptops & Computers">Laptops</option>
+              <option value="Gaming & VR">Gaming</option>
+              <option value="Smartphones & Tablets">Phones</option>
+              <option value="Drones & Action Cams">Drones</option>
+            </select>
+
+            <select id="hero-location-select" class="form-control" style="height: 46px; font-size: 0.85rem;">
+              <option value="All Locations">All India</option>
+              <option value="Mumbai">Mumbai</option>
+              <option value="Bengaluru">Bengaluru</option>
+              <option value="Delhi NCR">Delhi NCR</option>
+              <option value="Hyderabad">Hyderabad</option>
+              <option value="Pune">Pune</option>
+            </select>
+
+            <button type="button" id="hero-search-btn" class="btn btn-primary" style="height: 46px; padding: 0 1.4rem;">
+              <i class="fas fa-search"></i> Find
+            </button>
+          </div>
+
+          <!-- Quick Search Tags -->
+          <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 0.9rem; flex-wrap: wrap; font-size: 0.75rem;">
+            <span style="color: var(--text-dim);">Trending SKUs:</span>
+            <a href="/marketplace.html?search=Samsung+Galaxy+A36" class="variant-tag" style="text-decoration: none;">Samsung A36 5G (8+128GB)</a>
+            <a href="/marketplace.html?search=Sony+Alpha+A7" class="variant-tag" style="text-decoration: none;">Sony A7 IV</a>
+            <a href="/marketplace.html?search=MacBook+M3" class="variant-tag" style="text-decoration: none;">MacBook M3 Max</a>
+            <a href="/marketplace.html?search=PS5+Pro" class="variant-tag" style="text-decoration: none;">PS5 Pro</a>
+          </div>
+        </div>
+
+        <!-- Hero Stats Strip -->
+        <div style="display: flex; gap: 2.5rem; border-top: 1px solid var(--border-light); padding-top: 1.5rem; flex-wrap: wrap;">
+          <div>
+            <div style="font-family: var(--font-heading); font-size: 1.6rem; font-weight: 800; color: #fff;">₹1.8 Cr+</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Verified Gear Traded</div>
+          </div>
+          <div>
+            <div style="font-family: var(--font-heading); font-size: 1.6rem; font-weight: 800; color: var(--accent-cyan);">100%</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Rental Credit Toward Buy</div>
+          </div>
+          <div>
+            <div style="font-family: var(--font-heading); font-size: 1.6rem; font-weight: 800; color: #6EE7B7;">4 Platforms</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Live E-Commerce Parity</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       SECTION 2: TRENDING PRODUCTS
+  =================================================================== -->
+  <section class="section" style="padding: 4.5rem 0;">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span class="badge badge-both" style="margin-bottom: 0.5rem;"><i class="fas fa-fire"></i> Live Catalog</span>
+          <h2 style="font-family: var(--font-heading); font-size: 2.2rem; font-weight: 800; color: #fff;">
+            Trending Products
+          </h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">High-demand creator equipment and flagship tech available for rent & instant direct purchase.</p>
+        </div>
+        <a href="/marketplace.html" class="btn btn-secondary btn-sm">
+          Browse All Products <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <div class="product-grid" id="homepage-featured-grid">
+        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+          <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary);"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       SECTION 3: POPULAR RENTAL PRODUCTS
+  =================================================================== -->
+  <section class="section" style="padding: 4.5rem 0; background: linear-gradient(180deg, rgba(13, 20, 46, 0.4) 0%, rgba(7, 11, 25, 0.8) 100%);">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span class="badge badge-rent" style="margin-bottom: 0.5rem;"><i class="fas fa-calendar-alt"></i> Flexible Leases</span>
+          <h2 style="font-family: var(--font-heading); font-size: 2.2rem; font-weight: 800; color: #fff;">
+            Popular Rental Products
+          </h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Rent top gear by day, week, or month with 100% refundable SafeShield escrow deposits.</p>
+        </div>
+        <a href="/marketplace.html?listingType=rent" class="btn btn-secondary btn-sm">
+          View All Rentals <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;" id="popular-rentals-grid">
+        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+          <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary);"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       SECTION 4: BEST PRICE COMPARISON DEALS (BUYHATKE-STYLE)
+  =================================================================== -->
+  <section class="section" style="padding: 5rem 0;">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span class="badge badge-sell" style="margin-bottom: 0.5rem;"><i class="fas fa-search-dollar"></i> Buyhatke Parity</span>
+          <h2 style="font-family: var(--font-heading); font-size: 2.2rem; font-weight: 800; color: #fff;">
+            Best Price Comparison Deals
+          </h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            Real-time price intelligence benchmarked across Amazon India, Flipkart, Croma, and Reliance Digital.
+          </p>
+        </div>
+        <a href="/marketplace.html?listingType=buy" class="btn btn-secondary btn-sm">
+          Compare More Deals <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <!-- Price Deals Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem;" id="price-deals-grid">
+        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+          <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary);"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       SECTION 5: RECENTLY ADDED PRODUCTS
+  =================================================================== -->
+  <section class="section" style="padding: 4.5rem 0; background: linear-gradient(180deg, rgba(7, 11, 25, 0.8) 0%, rgba(13, 20, 46, 0.4) 100%);">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span class="badge badge-both" style="margin-bottom: 0.5rem;"><i class="fas fa-clock"></i> New Arrivals</span>
+          <h2 style="font-family: var(--font-heading); font-size: 2.2rem; font-weight: 800; color: #fff;">
+            Recently Added Products
+          </h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Fresh listings from individual sellers and certified rental studios.</p>
+        </div>
+        <a href="/marketplace.html?sort=newest" class="btn btn-secondary btn-sm">
+          Explore All New Gear <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;" id="recently-added-grid">
+        <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+          <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary);"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       SECTION 6: HOW RENTORA WORKS
+  =================================================================== -->
+  <section class="section" style="padding: 5.5rem 0;">
+    <div class="container">
+      <div style="text-align: center; max-width: 650px; margin: 0 auto 3.5rem;">
+        <span class="badge badge-both" style="margin-bottom: 0.8rem;"><i class="fas fa-cogs"></i> Simple & Secure</span>
+        <h2 style="font-family: var(--font-heading); font-size: 2.4rem; font-weight: 800; color: #fff; margin-bottom: 0.8rem;">
+          How RENTORA Works
+        </h2>
+        <p style="color: var(--text-muted);">
+          Three seamless steps to rent or buy genuine hardware at the lowest market price.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+        <!-- Step 1 -->
+        <div class="glass-card" style="padding: 2.5rem 2rem; position: relative;">
+          <div style="position: absolute; top: 1.5rem; right: 1.5rem; font-family: var(--font-heading); font-size: 2.5rem; font-weight: 800; color: rgba(99, 102, 241, 0.2);">01</div>
+          <div style="width: 56px; height: 56px; border-radius: var(--radius-md); background: rgba(99, 102, 241, 0.15); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.5rem; margin-bottom: 1.5rem;">
+            <i class="fas fa-search"></i>
+          </div>
+          <h3 style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem;">1. Browse & Price Compare</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+            Search any product. RENTORA isolates the exact RAM, storage, and model variant, and automatically scans Amazon, Flipkart, Croma, and Reliance Digital to pinpoint the cheapest genuine price.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="glass-card" style="padding: 2.5rem 2rem; position: relative;">
+          <div style="position: absolute; top: 1.5rem; right: 1.5rem; font-family: var(--font-heading); font-size: 2.5rem; font-weight: 800; color: rgba(6, 182, 212, 0.2);">02</div>
+          <div style="width: 56px; height: 56px; border-radius: var(--radius-md); background: rgba(6, 182, 212, 0.15); display: flex; align-items: center; justify-content: center; color: var(--accent-cyan); font-size: 1.5rem; margin-bottom: 1.5rem;">
+            <i class="fas fa-handshake"></i>
+          </div>
+          <h3 style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem;">2. Rent or Buy with SafeShield</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+            Choose your rental duration (daily, weekly, monthly) or purchase outright from verified sellers. Security deposits are locked in secure escrow until item return verification.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="glass-card" style="padding: 2.5rem 2rem; position: relative;">
+          <div style="position: absolute; top: 1.5rem; right: 1.5rem; font-family: var(--font-heading); font-size: 2.5rem; font-weight: 800; color: rgba(16, 185, 129, 0.2);">03</div>
+          <div style="width: 56px; height: 56px; border-radius: var(--radius-md); background: rgba(16, 185, 129, 0.15); display: flex; align-items: center; justify-content: center; color: var(--accent-emerald); font-size: 1.5rem; margin-bottom: 1.5rem;">
+            <i class="fas fa-box-check"></i>
+          </div>
+          <h3 style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem;">3. Try Before You Buy</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+            Test the gear in your real production workflow. If you love it, convert to full ownership and 100% of your rental payment is deducted from the seller purchase price! Or return easily with scheduled courier pickup.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       SECTION 7: VERIFIED SELLERS
+  =================================================================== -->
+  <section class="section" style="padding: 5rem 0; background: linear-gradient(180deg, rgba(13, 20, 46, 0.4) 0%, rgba(7, 11, 25, 0.9) 100%);">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span class="badge badge-both" style="margin-bottom: 0.5rem;"><i class="fas fa-user-check"></i> KYC & Gear Inspected</span>
+          <h2 style="font-family: var(--font-heading); font-size: 2.2rem; font-weight: 800; color: #fff;">
+            Verified RENTORA Sellers
+          </h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Identity-verified studios, cinematographers, and enterprise equipment partners.</p>
+        </div>
+        <a href="/register.html?role=seller" class="btn btn-primary btn-sm">
+          <i class="fas fa-store"></i> Become a Verified Seller
+        </a>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+        <!-- Seller 1 -->
+        <div class="glass-card" style="padding: 2rem;">
+          <div style="display: flex; gap: 1.2rem; align-items: center; margin-bottom: 1.2rem;">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" alt="Apex Pro Gear" style="width: 65px; height: 65px; border-radius: var(--radius-md); object-fit: cover; border: 2px solid var(--primary);" />
+            <div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <h4 style="font-size: 1.15rem; color: #fff;">Apex Pro Gear & Rentals</h4>
+                <span class="badge badge-active" style="font-size: 0.65rem;"><i class="fas fa-check-circle"></i> KYC Verified</span>
+              </div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">
+                <i class="fas fa-map-marker-alt" style="color: var(--primary);"></i> Bengaluru, Karnataka • 86 Reviews
+              </div>
+              <div style="color: #FBBF24; font-size: 0.85rem; margin-top: 0.3rem;">
+                ★★★★★ <span style="color: #fff; font-weight: 700;">4.9</span>
+              </div>
+            </div>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin-bottom: 1.2rem;">
+            Specializing in Sony cinema bodies, G-Master primes, DJI Mavic 3 Cine drones, and MacBook M3 Max mobile editing rigs.
+          </p>
+          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-light); padding-top: 1rem; font-size: 0.85rem;">
+            <span style="color: var(--accent-cyan); font-weight: 700;">14 Active Gear Listings</span>
+            <a href="/marketplace.html?seller=Apex+Pro+Gear" class="btn btn-secondary btn-sm" style="font-size: 0.75rem;">View Inventory</a>
+          </div>
+        </div>
+
+        <!-- Seller 2 -->
+        <div class="glass-card" style="padding: 2rem;">
+          <div style="display: flex; gap: 1.2rem; align-items: center; margin-bottom: 1.2rem;">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="CyberTech Studio" style="width: 65px; height: 65px; border-radius: var(--radius-md); object-fit: cover; border: 2px solid var(--accent-cyan);" />
+            <div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <h4 style="font-size: 1.15rem; color: #fff;">CyberTech Workstation Lab</h4>
+                <span class="badge badge-active" style="font-size: 0.65rem;"><i class="fas fa-check-circle"></i> KYC Verified</span>
+              </div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">
+                <i class="fas fa-map-marker-alt" style="color: var(--accent-cyan);"></i> Mumbai, Maharashtra • 112 Reviews
+              </div>
+              <div style="color: #FBBF24; font-size: 0.85rem; margin-top: 0.3rem;">
+                ★★★★★ <span style="color: #fff; font-weight: 700;">4.95</span>
+              </div>
+            </div>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin-bottom: 1.2rem;">
+            High-performance Alienware RTX 4090 gaming laptops, PS5 Pro VR bundles, 8K monitors, and mobile studio hardware.
+          </p>
+          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-light); padding-top: 1rem; font-size: 0.85rem;">
+            <span style="color: var(--accent-cyan); font-weight: 700;">19 Active Gear Listings</span>
+            <a href="/marketplace.html?seller=CyberTech" class="btn btn-secondary btn-sm" style="font-size: 0.75rem;">View Inventory</a>
+          </div>
+        </div>
+
+        <!-- Seller 3 -->
+        <div class="glass-card" style="padding: 2rem;">
+          <div style="display: flex; gap: 1.2rem; align-items: center; margin-bottom: 1.2rem;">
+            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="SoundWave Acoustics" style="width: 65px; height: 65px; border-radius: var(--radius-md); object-fit: cover; border: 2px solid var(--accent-emerald);" />
+            <div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <h4 style="font-size: 1.15rem; color: #fff;">SoundWave Pro Acoustics</h4>
+                <span class="badge badge-active" style="font-size: 0.65rem;"><i class="fas fa-check-circle"></i> KYC Verified</span>
+              </div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">
+                <i class="fas fa-map-marker-alt" style="color: var(--accent-emerald);"></i> Delhi NCR • 54 Reviews
+              </div>
+              <div style="color: #FBBF24; font-size: 0.85rem; margin-top: 0.3rem;">
+                ★★★★★ <span style="color: #fff; font-weight: 700;">4.85</span>
+              </div>
+            </div>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin-bottom: 1.2rem;">
+            Sennheiser audiophile reference headphones, Shure wireless microphones, Zoom field recorders, and Genelec studio monitors.
+          </p>
+          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-light); padding-top: 1rem; font-size: 0.85rem;">
+            <span style="color: var(--accent-cyan); font-weight: 700;">9 Active Audio Listings</span>
+            <a href="/marketplace.html?seller=SoundWave" class="btn btn-secondary btn-sm" style="font-size: 0.75rem;">View Inventory</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       SECTION 8: FOOTER WITH USEFUL LINKS & COMMUNITY POLICIES
+  =================================================================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-brand" style="margin-bottom: 0.5rem;">
+            <div class="brand-logo-icon"><i class="fas fa-cube"></i></div>
+            <span>RENT<span class="gradient-text">ORA</span></span>
+          </div>
+          <p class="footer-desc">
+            Smart Rental & Buying Marketplace combining peer hardware leases, direct selling, and Buyhatke-inspired price matching across Amazon, Flipkart, Croma, and Reliance Digital.
+          </p>
+          <div style="margin-top: 1.2rem; display: flex; gap: 0.8rem;">
+            <span class="badge badge-both" style="font-size: 0.7rem;"><i class="fas fa-shield-check"></i> SafeShield Escrow</span>
+            <span class="badge badge-rent" style="font-size: 0.7rem;"><i class="fas fa-bolt"></i> 100% Try-to-Buy</span>
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <h4>Marketplace</h4>
+          <ul>
+            <li><a href="/marketplace.html?listingType=rent">Rent Hardware</a></li>
+            <li><a href="/marketplace.html?listingType=buy">Buy from Sellers</a></li>
+            <li><a href="/marketplace.html?category=Cameras+%26+Lenses">Cameras & Lenses</a></li>
+            <li><a href="/marketplace.html?category=Laptops+%26+Computers">Laptops & Workstations</a></li>
+            <li><a href="/marketplace.html?category=Gaming+%26+VR">Gaming & VR Rigs</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links">
+          <h4>Price Intelligence</h4>
+          <ul>
+            <li><a href="/marketplace.html?search=Samsung+Galaxy+A36">Samsung A36 5G Comparison</a></li>
+            <li><a href="/marketplace.html?search=Sony+Alpha+A7">Sony A7 IV Parity Matrix</a></li>
+            <li><a href="/marketplace.html?search=MacBook+Pro+M3">MacBook M3 Max Benchmarks</a></li>
+            <li><a href="/calculator.html">Rent vs Buy Calculator</a></li>
+            <li><a href="/marketplace.html">Supported E-Commerce Stores</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links">
+          <h4>User Accounts</h4>
+          <ul>
+            <li><a href="/customer-dashboard.html">Customer Dashboard</a></li>
+            <li><a href="/seller-dashboard.html">Seller Portal & Inventory</a></li>
+            <li><a href="/admin-dashboard.html">Admin Moderation Console</a></li>
+            <li><a href="/my-rentals.html">My Active Rentals</a></li>
+            <li><a href="/register.html?role=seller">Seller KYC Verification</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <p>&copy; 2026 RENTORA Technologies Inc. All rights reserved. Built with Node.js, Express, MongoDB, Three.js & GSAP.</p>
+        <div style="display: flex; gap: 1.5rem; font-size: 0.85rem; color: var(--text-dim);">
+          <span style="color: var(--accent-emerald);"><i class="fas fa-lock"></i> 256-Bit SSL Encrypted</span>
+          <span>Terms of Service</span>
+          <span>Privacy Policy</span>
+          <span>Damage Protection Policy</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Core Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/3d-hero.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

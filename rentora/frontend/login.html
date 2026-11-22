@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In – Rentora Marketplace</title>
+  
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    .auth-page-wrap {
+      min-height: calc(100vh - 80px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 460px;
+      padding: 2.5rem;
+      border-radius: var(--radius-lg);
+    }
+
+    .auth-role-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.35rem;
+      border-radius: var(--radius-full);
+      margin-bottom: 2rem;
+      border: 1px solid var(--border-light);
+    }
+
+    .auth-role-tab {
+      padding: 0.6rem;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .auth-role-tab.active {
+      background: var(--gradient-primary);
+      color: #fff;
+      box-shadow: 0 2px 10px var(--primary-glow);
+    }
+
+    .quick-login-pills {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .quick-login-pills h5 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-dim);
+      margin-bottom: 0.8rem;
+      text-align: center;
+    }
+
+    .quick-login-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.5rem;
+    }
+
+    .quick-btn {
+      padding: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-light);
+      color: var(--text-muted);
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .quick-btn:hover {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: var(--primary);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="nav-brand">
+        <div class="brand-logo-icon"><i class="fas fa-cube"></i></div>
+        <span>RENT<span class="gradient-text">ORA</span></span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/index.html" class="nav-link">Home</a></li>
+        <li><a href="/marketplace.html" class="nav-link">Marketplace</a></li>
+        <li><a href="/calculator.html" class="nav-link">Rent vs Buy</a></li>
+      </ul>
+
+      <div class="nav-actions" id="nav-actions">
+        <a href="/register.html" class="btn btn-primary btn-sm">Create Account</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="auth-page-wrap">
+    <div class="glass-panel auth-card">
+      <div style="text-align: center; margin-bottom: 1.8rem;">
+        <h2 style="font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 0.4rem;">
+          Welcome Back
+        </h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">
+          Sign in to manage rentals, equipment, or your store
+        </p>
+      </div>
+
+      <!-- Role Tabs -->
+      <div class="auth-role-tabs">
+        <div class="auth-role-tab active" data-role="customer">Customer</div>
+        <div class="auth-role-tab" data-role="seller">Seller</div>
+        <div class="auth-role-tab" data-role="admin">Admin</div>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form">
+        <div style="margin-bottom: 1.2rem;">
+          <label class="form-label" for="login-email">Email Address</label>
+          <input type="email" id="login-email" class="form-control" placeholder="name@example.com" required />
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+            <label class="form-label" for="login-password" style="margin-bottom: 0;">Password</label>
+            <a href="#" style="font-size: 0.8rem; color: var(--accent-cyan);">Forgot password?</a>
+          </div>
+          <input type="password" id="login-password" class="form-control" placeholder="••••••••" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem;">
+          Sign In to Rentora
+        </button>
+      </form>
+
+      <!-- 1-Click Demo Shortcut Pills -->
+      <div class="quick-login-pills">
+        <h5>1-Click Demo Logins</h5>
+        <div class="quick-login-grid">
+          <button type="button" class="quick-btn" id="quick-login-customer">
+            <i class="fas fa-user"></i> Customer
+          </button>
+          <button type="button" class="quick-btn" id="quick-login-seller">
+            <i class="fas fa-store"></i> Seller
+          </button>
+          <button type="button" class="quick-btn" id="quick-login-admin">
+            <i class="fas fa-shield-alt"></i> Admin
+          </button>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 1.8rem; font-size: 0.9rem; color: var(--text-muted);">
+        Don't have an account? <a href="/register.html" style="color: var(--accent-cyan); font-weight: 600;">Create one here</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

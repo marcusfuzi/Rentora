@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seller Studio – Rentora</title>
+  
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="nav-brand">
+        <div class="brand-logo-icon"><i class="fas fa-cube"></i></div>
+        <span>RENT<span class="gradient-text">ORA</span></span>
+      </a>
+
+      <button class="mobile-nav-toggle" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/index.html" class="nav-link">Home</a></li>
+        <li><a href="/marketplace.html" class="nav-link">Marketplace</a></li>
+        <li><a href="/calculator.html" class="nav-link">Rent vs Buy</a></li>
+        <li><a href="/seller-dashboard.html" class="nav-link active">Seller Hub</a></li>
+      </ul>
+
+      <div class="nav-actions" id="nav-actions"></div>
+    </div>
+  </header>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="dashboard-user-profile">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" id="dash-seller-avatar" class="dash-avatar" alt="Avatar" />
+        <div class="dash-user-info">
+          <h4 id="dash-seller-store-name">Apex Pro Gear</h4>
+          <span id="dash-seller-name">Vikram Mehta</span>
+        </div>
+      </div>
+
+      <ul class="sidebar-nav-list">
+        <li class="sidebar-nav-item active">
+          <a href="/seller-dashboard.html"><i class="fas fa-chart-pie"></i> Seller Overview</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a href="/add-product.html"><i class="fas fa-plus-circle"></i> Add New Product</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a href="/marketplace.html"><i class="fas fa-compass"></i> Marketplace</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a href="/profile.html"><i class="fas fa-store"></i> Store Settings & KYC</a>
+        </li>
+        <li class="sidebar-nav-item" style="margin-top: auto;">
+          <button onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+      <div class="dash-header-row">
+        <div>
+          <h1>Seller Studio Dashboard</h1>
+          <p>Manage product inventory, approve rental requests, and track rental revenue.</p>
+        </div>
+        <a href="/add-product.html" class="btn btn-primary btn-sm">
+          <i class="fas fa-plus"></i> List New Equipment
+        </a>
+      </div>
+
+      <!-- Metrics Grid -->
+      <div class="metrics-grid">
+        <div class="glass-card metric-card">
+          <div class="metric-icon-wrap"><i class="fas fa-boxes"></i></div>
+          <div class="metric-value" id="seller-metric-listings">0</div>
+          <div class="metric-label">Active Listings</div>
+        </div>
+
+        <div class="glass-card metric-card">
+          <div class="metric-icon-wrap" style="color: var(--accent-amber); background: rgba(245, 158, 11, 0.15);"><i class="fas fa-hourglass-half"></i></div>
+          <div class="metric-value" id="seller-metric-pending" style="color: #FBBF24;">0</div>
+          <div class="metric-label">Pending Approval</div>
+        </div>
+
+        <div class="glass-card metric-card">
+          <div class="metric-icon-wrap" style="color: var(--accent-cyan); background: rgba(6, 182, 212, 0.15);"><i class="fas fa-truck-loading"></i></div>
+          <div class="metric-value" id="seller-metric-active" style="color: #67E8F9;">0</div>
+          <div class="metric-label">Active Deployments</div>
+        </div>
+
+        <div class="glass-card metric-card">
+          <div class="metric-icon-wrap" style="color: var(--accent-emerald); background: rgba(16, 185, 129, 0.15);"><i class="fas fa-rupee-sign"></i></div>
+          <div class="metric-value" id="seller-metric-revenue" style="color: #6EE7B7;">₹0</div>
+          <div class="metric-label">Gross Revenue</div>
+        </div>
+      </div>
+
+      <!-- Monthly Revenue Chart -->
+      <div class="glass-panel chart-container-card">
+        <div class="chart-header">
+          <div>
+            <h3 style="font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700; color: #fff;">
+              Revenue & Rental Volume Analytics
+            </h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem;">Monthly earnings performance across rentals and outright sales</p>
+          </div>
+          <span class="badge badge-both">Live Telemetry</span>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="seller-revenue-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- Incoming Rental Requests & Return Inspections -->
+      <div class="section-title-row">
+        <h3><i class="fas fa-inbox" style="color: var(--accent-cyan); margin-right: 0.4rem;"></i> Rental Requests & Returns Workflow</h3>
+      </div>
+
+      <div class="table-responsive">
+        <table class="dash-table">
+          <thead>
+            <tr>
+              <th>Order #</th>
+              <th>Product & Renter</th>
+              <th>Rental Timeline</th>
+              <th>Financials</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="seller-rentals-table-body">
+            <tr>
+              <td colspan="6" style="text-align: center; padding: 2rem;">
+                <i class="fas fa-spinner fa-spin"></i> Loading rental orders...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Equipment Inventory Management -->
+      <div class="section-title-row" style="margin-top: 3.5rem;">
+        <h3><i class="fas fa-cubes" style="color: var(--primary); margin-right: 0.4rem;"></i> Store Inventory & Pricing Models</h3>
+        <a href="/add-product.html" class="btn btn-secondary btn-sm">+ Add Item</a>
+      </div>
+
+      <div class="table-responsive">
+        <table class="dash-table">
+          <thead>
+            <tr>
+              <th>Product Title</th>
+              <th>Listing Mode</th>
+              <th>Rates</th>
+              <th>Stock</th>
+              <th>Availability</th>
+              <th>Manage</th>
+            </tr>
+          </thead>
+          <tbody id="seller-inventory-table-body">
+            <tr>
+              <td colspan="6" style="text-align: center; padding: 2rem;">
+                <i class="fas fa-spinner fa-spin"></i> Loading inventory...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <!-- COMPLETE RETURN & DEPOSIT INSPECTION MODAL -->
+  <div class="modal-overlay" id="complete-return-modal">
+    <div class="modal-content">
+      <button class="modal-close-btn">&times;</button>
+
+      <div style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-light); padding-bottom: 1rem;">
+        <span class="badge badge-both" style="margin-bottom: 0.4rem;">Inspection Check</span>
+        <h3 style="font-family: var(--font-heading); font-size: 1.3rem; color: #fff;">
+          Complete Product Return & Escrow Refund
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.2rem;">
+          Verify that all accessories, optical elements, cables, and packaging have returned intact.
+        </p>
+      </div>
+
+      <form onsubmit="event.preventDefault(); submitReturnInspection();">
+        <div class="form-group">
+          <label class="form-label" for="inspect-condition">Physical & Operational Condition</label>
+          <select id="inspect-condition" class="form-control" required>
+            <option value="Excellent">Excellent (No blemishes, fully functional)</option>
+            <option value="Good">Good (Normal minor wear, fully functional)</option>
+            <option value="Minor Damage">Minor Damage (Cosmetic scratches / missing small cable)</option>
+            <option value="Severe Damage">Severe Damage (Glass scratch / sensor malfunction)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="inspect-damage-fee">Damage Deduction Amount (₹) if any</label>
+          <input type="number" id="inspect-damage-fee" class="form-control" value="0" min="0" placeholder="0" />
+          <span style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.3rem; display: block;">
+            Deducted from the customer's escrow security deposit. The remaining balance will be immediately refunded.
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="inspect-notes">Inspection Notes & Checklist</label>
+          <textarea id="inspect-notes" class="form-control" rows="3" placeholder="Checked body condition, optical cleanliness, power cycle, and battery health..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+          Verify Return & Release Escrow Deposit
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/seller.js"></script>
+</body>
+</html>

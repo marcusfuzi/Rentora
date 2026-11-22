@@ -1,0 +1,8 @@
+node_modules/
+*/node_modules/
+.env
+.env.local
+dist/
+*.log
+serve-5173.cjs
+.DS_Store

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Profile & Settings – Rentora</title>
+  
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="nav-brand">
+        <div class="brand-logo-icon"><i class="fas fa-cube"></i></div>
+        <span>RENT<span class="gradient-text">ORA</span></span>
+      </a>
+
+      <button class="mobile-nav-toggle" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/index.html" class="nav-link">Home</a></li>
+        <li><a href="/marketplace.html" class="nav-link">Marketplace</a></li>
+        <li><a href="/calculator.html" class="nav-link">Rent vs Buy</a></li>
+        <li><a href="/my-rentals.html" class="nav-link">My Rentals</a></li>
+      </ul>
+
+      <div class="nav-actions" id="nav-actions"></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: 3rem; padding-bottom: 6rem; max-width: 800px;">
+    <div style="margin-bottom: 2rem;">
+      <h1 style="font-family: var(--font-heading); font-size: 2.2rem; font-weight: 800; color: #fff;">
+        Account Profile & Settings
+      </h1>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">
+        Manage your contact information, shipping address, and seller verification credentials.
+      </p>
+    </div>
+
+    <div class="glass-panel" style="padding: 2.5rem;">
+      <!-- Profile Header -->
+      <div style="display: flex; gap: 1.5rem; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid var(--border-light); padding-bottom: 2rem;">
+        <img src="" id="profile-avatar-preview" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary);" />
+        <div>
+          <h2 id="profile-name-display" style="font-size: 1.4rem; color: #fff;">Loading...</h2>
+          <div style="display: flex; gap: 0.8rem; align-items: center; margin-top: 0.3rem;">
+            <span class="badge badge-both" id="profile-role-badge">Customer</span>
+            <span id="profile-email-display" style="font-size: 0.85rem; color: var(--text-muted);">user@example.com</span>
+          </div>
+        </div>
+      </div>
+
+      <form id="profile-update-form">
+        <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 1.2rem;">Personal Details</h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="profile-name">Full Name</label>
+            <input type="text" id="profile-name" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="profile-phone">Contact Phone</label>
+            <input type="tel" id="profile-phone" class="form-control" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="profile-avatar">Avatar Image URL</label>
+          <input type="url" id="profile-avatar" class="form-control" placeholder="https://images.unsplash.com/..." />
+        </div>
+
+        <h3 style="font-size: 1.15rem; color: #fff; margin: 2rem 0 1.2rem;">Shipping & Delivery Address</h3>
+
+        <div class="form-group">
+          <label class="form-label" for="profile-street">Street Address & Apartment</label>
+          <input type="text" id="profile-street" class="form-control" placeholder="14 Skyline Towers, Apartment 5B" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="profile-city">City</label>
+            <input type="text" id="profile-city" class="form-control" placeholder="Mumbai" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="profile-state">State</label>
+            <input type="text" id="profile-state" class="form-control" placeholder="Maharashtra" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="profile-zip">Postal / PIN Code</label>
+            <input type="text" id="profile-zip" class="form-control" placeholder="400050" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="profile-country">Country</label>
+            <input type="text" id="profile-country" class="form-control" value="India" readonly />
+          </div>
+        </div>
+
+        <!-- Seller Business Section (Shown if role === 'seller') -->
+        <div id="profile-seller-section" style="display: none; margin-top: 2rem; padding: 1.5rem; background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.25); border-radius: var(--radius-md);">
+          <h3 style="font-size: 1.15rem; color: #67E8F9; margin-bottom: 1.2rem;">
+            <i class="fas fa-store"></i> Seller Business Information
+          </h3>
+
+          <div class="form-group">
+            <label class="form-label" for="profile-store-name">Store Name</label>
+            <input type="text" id="profile-store-name" class="form-control" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="profile-store-desc">Store Bio / Description</label>
+            <textarea id="profile-store-desc" class="form-control" rows="2"></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="profile-gst">GSTIN</label>
+              <input type="text" id="profile-gst" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="profile-bank">Bank Account & IFSC</label>
+              <input type="text" id="profile-bank" class="form-control" />
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 2rem;">
+          Save Profile Changes
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = getAuthUser();
+      if (!user) {
+        window.location.href = '/login.html?redirect=/profile.html';
+        return;
+      }
+
+      try {
+        const data = await apiRequest('/auth/me');
+        const u = data.user;
+
+        document.getElementById('profile-name-display').textContent = u.name;
+        document.getElementById('profile-email-display').textContent = u.email;
+        document.getElementById('profile-role-badge').textContent = u.role.toUpperCase();
+        document.getElementById('profile-avatar-preview').src = u.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80';
+
+        document.getElementById('profile-name').value = u.name || '';
+        document.getElementById('profile-phone').value = u.phone || '';
+        document.getElementById('profile-avatar').value = u.avatar || '';
+
+        const addr = u.address || {};
+        document.getElementById('profile-street').value = addr.street || '';
+        document.getElementById('profile-city').value = addr.city || '';
+        document.getElementById('profile-state').value = addr.state || '';
+        document.getElementById('profile-zip').value = addr.zipCode || '';
+
+        if (u.role === 'seller' || u.role === 'admin') {
+          const sellerSec = document.getElementById('profile-seller-section');
+          sellerSec.style.display = 'block';
+
+          const s = u.sellerDetails || {};
+          document.getElementById('profile-store-name').value = s.storeName || '';
+          document.getElementById('profile-store-desc').value = s.storeDescription || '';
+          document.getElementById('profile-gst').value = s.gstNumber || '';
+          document.getElementById('profile-bank').value = s.bankAccount || '';
+        }
+
+        // Handle profile submit
+        document.getElementById('profile-update-form').onsubmit = async (e) => {
+          e.preventDefault();
+
+          const name = document.getElementById('profile-name').value.trim();
+          const phone = document.getElementById('profile-phone').value.trim();
+          const avatar = document.getElementById('profile-avatar').value.trim();
+
+          const address = {
+            street: document.getElementById('profile-street').value.trim(),
+            city: document.getElementById('profile-city').value.trim(),
+            state: document.getElementById('profile-state').value.trim(),
+            zipCode: document.getElementById('profile-zip').value.trim(),
+            country: 'India',
+          };
+
+          const payload = { name, phone, avatar, address };
+
+          if (u.role === 'seller') {
+            payload.sellerDetails = {
+              storeName: document.getElementById('profile-store-name').value.trim(),
+              storeDescription: document.getElementById('profile-store-desc').value.trim(),
+              gstNumber: document.getElementById('profile-gst').value.trim(),
+              bankAccount: document.getElementById('profile-bank').value.trim(),
+            };
+          }
+
+          try {
+            const res = await apiRequest('/auth/profile', {
+              method: 'PUT',
+              body: JSON.stringify(payload),
+            });
+
+            setAuth(getToken(), res.user);
+            showToast('Profile updated successfully!', 'success');
+            setTimeout(() => { window.location.reload(); }, 800);
+          } catch (err) {
+            showToast(err.message, 'error');
+          }
+        };
+
+      } catch (err) {
+        showToast('Failed to load profile: ' + err.message, 'error');
+      }
+    });
+  </script>
+</body>
+</html>
