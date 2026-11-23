@@ -59,7 +59,7 @@ function closeComparePanel() {
   switchMarketplaceMode('all');
 }
 
-// Run Buyhatke-style multi-platform search
+// Run smart-comparison multi-platform search
 async function runPriceComparisonSearch() {
   const query = document.getElementById('compare-query-input')?.value.trim();
   const resultsBox = document.getElementById('compare-search-results-box');

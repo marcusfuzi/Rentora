@@ -188,8 +188,8 @@ The following items are part of the proposed future scope and should be marked c
 
 ## 📚 References & Inspiration
 
-- [Rentomojo](https://www.rentomojo.com/) — Online rental platform.
-- [Buyhatke](https://www.buyhatke.com/) — Online shopping price comparison and price-tracking platform.
+- [Premium Rental](https://www.Premium Rental.com/) — Online rental platform.
+- [SmartPrice](https://www.SmartPrice.com/) — Online shopping price comparison and price-tracking platform.
 
 These platforms are references for the project's general concept; Rentora is an independent academic project.
 

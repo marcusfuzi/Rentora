@@ -391,7 +391,7 @@ docChildren.push(
   p("Table 2.1 summarizes the capabilities of leading market platforms against the proposed RENTORA architecture:", { size: 24, spaceBefore: 80, spaceAfter: 120 }),
   
   createStyledTable(
-    ["System Feature", "OLX / Quikr", "Rentomojo", "Amazon / Flipkart", "RENTORA (Proposed)"],
+    ["System Feature", "OLX / Quikr", "Legacy Rental Platforms", "Amazon / Flipkart", "RENTORA (Proposed)"],
     [
       ["Core Offering Model", "C2C Classifieds (Buy/Sell)", "B2C Furniture & Appliances", "B2C Retail Marketplace", "Dual-Channel (Rent + Buy)"],
       ["Short-Term Tech Rentals", "No (Disorganized/Risky)", "No (Min 3-6 month lock-in)", "No (Outright purchase only)", "Yes (1 to 90 Days Dynamic)"],
@@ -772,3 +772,4 @@ Packer.toBuffer(doc).then(buffer => {
 }).catch(err => {
   console.error("ERROR Generating Word Document:", err);
 });
+

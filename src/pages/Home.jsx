@@ -253,7 +253,7 @@ export default function Home() {
         <HowItWorks />
       </section>
 
-      {/* SECTION 8: EXTERNAL PRICE COMPARISON (BUYHATKE STYLE) */}
+      {/* SECTION 8: EXTERNAL PRICE COMPARISON (SMARTPRICE ENGINE) */}
       <section id="price-comparison-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <ExternalPriceComparison />
       </section>

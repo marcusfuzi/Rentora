@@ -198,7 +198,7 @@
         </div>
 
         <!-- ===================================================================
-             BUYHATKE-STYLE MULTI-PLATFORM PRICE COMPARISON TABLE (SECTION 2)
+             smart-comparison MULTI-PLATFORM PRICE COMPARISON TABLE (SECTION 2)
         =================================================================== -->
         <div class="glass-panel price-comparison-widget" style="margin-top: 2rem;">
           <div class="comparison-header">
@@ -691,7 +691,7 @@
           }
         };
 
-        // Load Smart Price Comparison Matrix (Buyhatke-style)
+        // Load Smart Price Comparison Matrix (smart-comparison)
         await loadPriceComparison(activeProduct._id);
 
         // Load Reviews
@@ -748,7 +748,7 @@
       thumbEl.classList.add('active');
     }
 
-    // BUYHATKE-STYLE PRICE COMPARISON ENGINE (Prompt Section 2 & 3)
+    // smart-comparison PRICE COMPARISON ENGINE (Prompt Section 2 & 3)
     async function loadPriceComparison(productId) {
       const tbody = document.getElementById('comparison-table-body');
       try {

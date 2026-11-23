@@ -48,7 +48,7 @@ export default function HowItWorks() {
     {
       step: 'Step 1',
       title: 'Compare Online Retailers',
-      desc: 'Review Buyhatke-style external comparison against Amazon, Flipkart, and Croma.',
+      desc: 'Review live multi-store external comparison against Amazon, Flipkart, and Croma.',
       icon: Search
     },
     {

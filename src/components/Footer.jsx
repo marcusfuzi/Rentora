@@ -108,7 +108,7 @@ export default function Footer() {
                   }}
                   className="hover:text-cyan-400 transition-colors"
                 >
-                  Buyhatke Price Compare
+                  Multi-Store Price Compare
                 </button>
               </li>
               <li>

@@ -1,7 +1,25 @@
 import React, { useState } from 'react';
-import { Search, Star, MapPin, ArrowUpRight, ShoppingBag, Filter, CheckCircle2, Clock, Tag, ArrowUpDown, ShieldCheck, Zap, SlidersHorizontal, Sparkles } from 'lucide-react';
+import {
+  Search,
+  Star,
+  MapPin,
+  ArrowUpRight,
+  ShoppingBag,
+  Filter,
+  CheckCircle2,
+  Clock,
+  Tag,
+  ArrowUpDown,
+  ShieldCheck,
+  Zap,
+  SlidersHorizontal,
+  Sparkles,
+  Truck,
+  RotateCcw
+} from 'lucide-react';
 import { useRentora } from '../context/RentoraContext';
 import { formatINR } from '../data/rentoraData';
+import { getTenurePricing } from '../utils/pricingComparison';
 
 export default function TrendingMarketplace() {
   const {
@@ -23,9 +41,11 @@ export default function TrendingMarketplace() {
 
   const [sortBy, setSortBy] = useState('featured'); // 'featured' | 'price-low' | 'price-high' | 'rating'
   const [priceFilter, setPriceFilter] = useState('all'); // 'all' | 'under-2k' | '2k-5k' | 'above-5k'
+  const [cardTenureMap, setCardTenureMap] = useState({}); // { [productId]: 3 }
 
   const categories = [
     "All",
+    "Photography",
     "Cameras & Photography",
     "Laptops & MacBooks",
     "Gaming Consoles",
@@ -45,9 +65,13 @@ export default function TrendingMarketplace() {
 
   // Filtering products
   let filteredProducts = (products || []).filter(product => {
-    const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
+    const matchesCategory = selectedCategory === "All" ||
+      product.category === selectedCategory ||
+      (selectedCategory === "Photography" && product.category?.includes("Photography")) ||
+      (selectedCategory === "Cameras & Photography" && product.category?.includes("Photography"));
+
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          product.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          (product.category && product.category.toLowerCase().includes(searchQuery.toLowerCase())) ||
                           (product.specs && product.specs.some(s => s.toLowerCase().includes(searchQuery.toLowerCase())));
     const matchesLocation = selectedLocation === "All Locations" || (product.location && product.location.includes(selectedLocation.split(',')[0]));
     
@@ -82,6 +106,10 @@ export default function TrendingMarketplace() {
     return 0; // featured default
   });
 
+  const handleCardTenureChange = (productId, months) => {
+    setCardTenureMap(prev => ({ ...prev, [productId]: months }));
+  };
+
   return (
     <section id="marketplace" className="py-24 bg-[#F5F5EF] text-[#121512] relative select-none border-t border-[#183D2B]/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
@@ -97,7 +125,7 @@ export default function TrendingMarketplace() {
               TRENDING MARKETPLACE
             </h2>
             <p className="text-sm sm:text-base text-[#121512]/75 mt-2 font-medium max-w-xl">
-              Flight-cased camera packages, mobile 8K suites, and industrial grade gear. Compare live with Amazon & Flipkart in Indian Rupee (₹).
+              Flight-cased equipment, mobile workstations, and next-gen hardware. Choose flexible rental tenures or compare live prices with Amazon & Flipkart in Indian Rupee (₹).
             </p>
           </div>
 
@@ -165,7 +193,7 @@ export default function TrendingMarketplace() {
                 onChange={(e) => setPriceFilter(e.target.value)}
                 className="py-2.5 px-3 rounded-xl bg-[#F5F5EF] border border-[#183D2B]/15 text-xs text-[#121512] font-mono focus:outline-none focus:border-[#183D2B]"
               >
-                <option value="all">All Daily Rates</option>
+                <option value="all">All Rates</option>
                 <option value="under-2k">Under ₹2,000 / day</option>
                 <option value="2k-5k">₹2,000 - ₹5,000 / day</option>
                 <option value="above-5k">₹5,000+ / day</option>
@@ -211,6 +239,10 @@ export default function TrendingMarketplace() {
           {filteredProducts.map((product) => {
             const rentPrice = product.dailyRate;
             const buyPrice = product.buyPrice;
+            const tenureData = getTenurePricing(product);
+            const activeTenureMonths = cardTenureMap[product.id] || 3;
+            const activeTenure = tenureData.tenures.find(t => t.months === activeTenureMonths) || tenureData.tenures[1];
+            
             const savingsVsBuy = Math.max(0, (product.amazonPrice || buyPrice) - (rentPrice * 3));
             const savingsPct = Math.round((savingsVsBuy / (product.amazonPrice || buyPrice)) * 100);
 
@@ -219,26 +251,21 @@ export default function TrendingMarketplace() {
                 key={product.id}
                 className="group bg-white rounded-3xl border border-[#183D2B]/15 hover:border-[#183D2B] overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-500 flex flex-col justify-between"
               >
+                {/* Top Media Area */}
                 <div>
-                  {/* Image Container with Badges */}
-                  <div className="relative aspect-[4/3] overflow-hidden bg-black/10">
+                  <div className="relative aspect-[4/3] bg-black/5 overflow-hidden">
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 cursor-pointer"
+                      onClick={() => openProductDetail(product, activeMode)}
                     />
                     
                     {/* Top Badges */}
                     <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
                       <span className="px-2.5 py-0.5 rounded-full bg-[#183D2B] text-[#C9F36B] text-[10px] font-mono font-bold uppercase tracking-wider shadow-sm border border-[#C9F36B]/30">
-                        {product.badge || 'Verified Rig'}
+                        {product.badge || 'Mint Condition'}
                       </span>
-                      {product.savingsText && (
-                        <span className="px-2.5 py-0.5 rounded-full bg-[#C9F36B] text-[#183D2B] text-[10px] font-bold uppercase tracking-tight shadow-sm flex items-center gap-1 font-mono">
-                          <Tag className="w-3 h-3" />
-                          <span>{product.savingsText}</span>
-                        </span>
-                      )}
                     </div>
 
                     {/* Rating Pill */}
@@ -253,9 +280,9 @@ export default function TrendingMarketplace() {
                       <span>{product.location || 'Mumbai, MH'}</span>
                     </div>
 
-                    {/* Savings Tag on Rent */}
+                    {/* Savings Tag */}
                     <div className="absolute bottom-3 right-3 text-[10px] font-mono text-[#183D2B] bg-[#C9F36B] font-bold px-2 py-0.5 rounded-md shadow">
-                      Save {savingsPct}%
+                      Save {savingsPct}% vs Buy
                     </div>
                   </div>
 
@@ -271,34 +298,65 @@ export default function TrendingMarketplace() {
 
                     <h3
                       onClick={() => openProductDetail(product, activeMode)}
-                      className="font-serif font-bold text-lg sm:text-xl text-[#121512] tracking-tight group-hover:text-[#183D2B] transition cursor-pointer"
+                      className="font-serif font-bold text-lg text-[#121512] tracking-tight group-hover:text-[#183D2B] transition cursor-pointer line-clamp-1"
                     >
                       {product.name}
                     </h3>
 
-                    {/* Specs Tags */}
-                    <div className="flex flex-wrap gap-1.5 pt-1">
-                      {product.specs?.slice(0, 2).map((feat, fIdx) => (
-                        <span
-                          key={fIdx}
-                          className="px-2 py-0.5 rounded bg-[#F5F5EF] border border-[#183D2B]/10 text-[10px] font-mono text-[#121512]/80"
-                        >
-                          {feat}
-                        </span>
-                      ))}
-                    </div>
+                    {/* RENT TENURE SELECTOR (Interactive tenure pills right on the card) */}
+                    {activeMode === 'rent' ? (
+                      <div className="space-y-1.5 pt-1">
+                        <div className="flex items-center justify-between text-[10px] font-mono text-slate-500">
+                          <span>Tenure Options:</span>
+                          <span className="text-emerald-700 font-bold">100% Refundable Deposit</span>
+                        </div>
+                        <div className="grid grid-cols-4 gap-1">
+                          {[
+                            { m: 1, label: '1M' },
+                            { m: 3, label: '3M' },
+                            { m: 6, label: '6M' },
+                            { m: 12, label: '12M' }
+                          ].map(t => (
+                            <button
+                              key={t.m}
+                              type="button"
+                              onClick={() => handleCardTenureChange(product.id, t.m)}
+                              className={`py-1 rounded-lg text-[10px] font-mono font-bold transition cursor-pointer border ${
+                                activeTenureMonths === t.m
+                                  ? 'bg-[#183D2B] text-[#C9F36B] border-[#183D2B]'
+                                  : 'bg-[#F5F5EF] text-[#121512]/70 border-slate-200 hover:border-slate-400'
+                              }`}
+                            >
+                              {t.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      /* Specs Tags for Buy Mode */
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {product.specs?.slice(0, 2).map((feat, fIdx) => (
+                          <span
+                            key={fIdx}
+                            className="px-2 py-0.5 rounded bg-[#F5F5EF] border border-[#183D2B]/10 text-[10px] font-mono text-[#121512]/80"
+                          >
+                            {feat}
+                          </span>
+                        ))}
+                      </div>
+                    )}
 
-                    {/* Quick Market Price Benchmark button (Amazon & Flipkart) */}
+                    {/* Multi-App Price Comparison Launcher Button */}
                     <button
                       type="button"
                       onClick={() => openComparisonModal(product)}
-                      className="w-full mt-2 py-2 px-3 rounded-xl bg-[#F5F5EF] hover:bg-[#183D2B]/10 border border-[#183D2B]/15 text-[#121512] text-[11px] font-mono flex items-center justify-between transition cursor-pointer"
+                      className="w-full mt-2 py-2 px-3 rounded-xl bg-[#F5F5EF] hover:bg-[#183D2B] hover:text-[#C9F36B] border border-[#183D2B]/15 text-[#121512] text-[11px] font-mono font-bold flex items-center justify-between transition cursor-pointer group/btn"
                     >
                       <span className="flex items-center gap-1.5">
-                        <Tag className="w-3.5 h-3.5 text-[#183D2B]" />
+                        <Tag className="w-3.5 h-3.5 text-[#183D2B] group-hover/btn:text-[#C9F36B]" />
                         <span>Compare Amazon & Flipkart</span>
                       </span>
-                      <span className="text-xs font-bold text-[#183D2B]">Live Parity →</span>
+                      <span className="text-xs">Live Parity →</span>
                     </button>
                   </div>
                 </div>
@@ -308,24 +366,33 @@ export default function TrendingMarketplace() {
                   <div className="flex items-baseline justify-between">
                     <div>
                       <span className="text-[10px] font-mono uppercase text-[#121512]/60 block">
-                        {activeMode === 'rent' ? 'Daily Rental' : 'Outright Buy'}
+                        {activeMode === 'rent' ? `${activeTenureMonths}m Plan Rent` : 'Outright Buy'}
                       </span>
                       <div className="flex items-baseline gap-1">
                         <span className="text-xl sm:text-2xl font-black text-[#121512] font-mono">
-                          {formatINR(activeMode === 'rent' ? rentPrice : buyPrice)}
+                          {formatINR(activeMode === 'rent' ? activeTenure.monthlyRate : buyPrice)}
                         </span>
                         {activeMode === 'rent' && (
-                          <span className="text-xs text-[#121512]/60 font-mono">/day</span>
+                          <span className="text-xs text-[#121512]/60 font-mono">/mo</span>
                         )}
                       </div>
                     </div>
 
-                    <button
-                      onClick={() => openProductDetail(product, activeMode)}
-                      className="px-3 py-1.5 rounded-lg bg-white hover:bg-[#183D2B]/10 border border-[#183D2B]/15 text-xs font-mono text-[#121512]/80 transition cursor-pointer"
-                    >
-                      Specs
-                    </button>
+                    <div className="text-right font-mono text-[11px]">
+                      {activeMode === 'rent' ? (
+                        <>
+                          <span className="text-slate-500 block text-[10px]">Refundable Deposit:</span>
+                          <span className="font-bold text-emerald-800">{formatINR(tenureData.refundableDeposit)}</span>
+                        </>
+                      ) : (
+                        <button
+                          onClick={() => openProductDetail(product, activeMode)}
+                          className="px-3 py-1.5 rounded-lg bg-white hover:bg-[#183D2B]/10 border border-[#183D2B]/15 text-xs font-mono text-[#121512]/80 transition cursor-pointer"
+                        >
+                          Specs
+                        </button>
+                      )}
+                    </div>
                   </div>
 
                   {/* Action Buttons: Rent Options & Add to Bag */}
@@ -336,14 +403,18 @@ export default function TrendingMarketplace() {
                       className="col-span-8 py-2.5 px-3 rounded-xl bg-[#183D2B] hover:bg-[#121512] text-[#C9F36B] font-mono text-xs font-bold uppercase transition shadow-md flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
                     >
                       <SlidersHorizontal className="w-3.5 h-3.5 text-[#C9F36B]" />
-                      <span>{activeMode === 'rent' ? 'Rent Options & Dates' : 'Buy Options'}</span>
+                      <span>{activeMode === 'rent' ? 'Lease Options' : 'Buy Options'}</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => {
-                        addToCart(product, activeMode, 3);
-                        addToast({ type: 'success', title: 'Added to Bag', message: `Added "${product.name}" to your rental bag!` });
+                        addToCart(product, activeMode, activeTenureMonths * 30);
+                        addToast({
+                          type: 'success',
+                          title: 'Added to Bag',
+                          message: `Added "${product.name}" for ${activeTenureMonths} months tenure!`
+                        });
                       }}
                       className="col-span-4 py-2.5 rounded-xl bg-white hover:bg-black/5 text-[#121512] font-mono text-xs font-bold uppercase transition flex items-center justify-center gap-1 border border-[#183D2B]/15 cursor-pointer shadow-sm active:scale-95"
                     >
@@ -358,25 +429,30 @@ export default function TrendingMarketplace() {
 
         {/* Empty state if no products match filter */}
         {filteredProducts.length === 0 && (
-          <div className="py-16 text-center bg-white rounded-3xl border border-[#183D2B]/15 p-8 max-w-lg mx-auto space-y-3">
-            <span className="text-3xl">🔍</span>
-            <h3 className="font-serif font-bold text-xl text-[#121512]">No Equipment Found</h3>
-            <p className="text-sm text-[#121512]/60">
-              No rigs matched your current filter criteria. Try adjusting your search query or price tier.
+          <div className="py-20 text-center space-y-4">
+            <div className="w-16 h-16 rounded-full bg-[#183D2B]/10 text-[#183D2B] flex items-center justify-center mx-auto">
+              <ShoppingBag className="w-8 h-8" />
+            </div>
+            <h3 className="font-serif font-bold text-2xl text-[#121512]">
+              No Hardware Matches Your Filter
+            </h3>
+            <p className="text-sm text-[#121512]/60 max-w-md mx-auto">
+              Try choosing a different location, rate tier or category to view available rigs.
             </p>
             <button
               onClick={() => {
-                setSearchQuery('');
                 setSelectedCategory('All');
-                setPriceFilter('all');
+                setSearchQuery('');
                 setSelectedLocation('All Locations');
+                setPriceFilter('all');
               }}
-              className="px-5 py-2 rounded-full bg-[#183D2B] text-[#C9F36B] font-mono text-xs font-bold uppercase tracking-wider"
+              className="px-6 py-2.5 rounded-xl bg-[#183D2B] text-[#C9F36B] font-mono text-xs font-bold uppercase"
             >
-              Reset Filters
+              Reset All Filters
             </button>
           </div>
         )}
+
       </div>
     </section>
   );

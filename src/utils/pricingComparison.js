@@ -1,6 +1,134 @@
 import { formatINR } from '../data/rentoraData';
 
 /**
+ * Generates 6-month historical price tracking data for a product.
+ * Computes all-time low, high, average, and price trends.
+ */
+export function getPriceHistory(product) {
+  if (!product) return null;
+
+  const basePrice = Number(product.buyPrice) || 100000;
+  const amazonPrice = Number(product.amazonPrice) || Math.round(basePrice * 1.03);
+  const flipkartPrice = Number(product.flipkartPrice) || Math.round(basePrice * 1.01);
+  const currentMinPrice = Math.min(basePrice, amazonPrice, flipkartPrice);
+
+  // Generate realistic 6-month trend anchored around current price
+  const months = ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'];
+  const monthLabels = ['6 Months Ago', '5 Months Ago', '4 Months Ago', 'Festive Sale', 'Last Month', 'Current Live'];
+  
+  // Historical variations: launch high -> monsoon -> big festive sale dip -> slight rebound -> current competitive price
+  const multipliers = [1.08, 1.05, 1.03, 0.96, 1.01, (currentMinPrice / basePrice)];
+  
+  const historyPoints = months.map((m, idx) => {
+    const price = Math.round(basePrice * multipliers[idx]);
+    return {
+      month: m,
+      label: monthLabels[idx],
+      price: price,
+      amazon: Math.round(price * 1.02),
+      flipkart: Math.round(price * 0.99)
+    };
+  });
+
+  // Ensure last point matches currentMinPrice
+  historyPoints[historyPoints.length - 1].price = currentMinPrice;
+
+  const allPrices = historyPoints.map(p => p.price);
+  const allTimeLow = Math.min(...allPrices);
+  const allTimeHigh = Math.max(...allPrices);
+  const averagePrice = Math.round(allPrices.reduce((a, b) => a + b, 0) / allPrices.length);
+  const priceDropFromHigh = allTimeHigh - currentMinPrice;
+  const priceDropPct = Math.round((priceDropFromHigh / allTimeHigh) * 100);
+  const isAtLowestNow = currentMinPrice <= (allTimeLow * 1.01);
+
+  return {
+    historyPoints,
+    allTimeLow,
+    allTimeHigh,
+    averagePrice,
+    currentPrice: currentMinPrice,
+    priceDropFromHigh,
+    priceDropPct,
+    isAtLowestNow,
+    trendVerdict: isAtLowestNow
+      ? '🟢 ALL-TIME LOW: Price is at its lowest record! Best time to buy or rent.'
+      : `📉 Price is ₹${priceDropFromHigh.toLocaleString('en-IN')} (${priceDropPct}%) below its 6-month peak.`
+  };
+}
+
+/**
+ * Computes flexible tenure pricing models (1M, 3M, 6M, 12M)
+ * with refundable deposit and maintenance inclusions.
+ */
+export function getTenurePricing(product) {
+  if (!product) return null;
+
+  const baseBuyPrice = Number(product.buyPrice) || 100000;
+  const dailyRate = Number(product.dailyRate) || Math.round(baseBuyPrice * 0.02);
+  
+  // Base monthly rate is ~12-14x daily rate (massive discount over daily)
+  const baseMonthly = Math.round(dailyRate * 12);
+  const refundableDeposit = Number(product.deposit) || Math.round(baseMonthly * 1.2);
+
+  const tenures = [
+    {
+      id: '1m',
+      label: '1 Month',
+      months: 1,
+      tag: 'Flexible / Short Term',
+      monthlyRate: baseMonthly,
+      totalRent: baseMonthly,
+      savingsPct: 0,
+      popular: false
+    },
+    {
+      id: '3m',
+      label: '3 Months',
+      months: 3,
+      tag: 'Quarterly Project',
+      monthlyRate: Math.round(baseMonthly * 0.90),
+      totalRent: Math.round(baseMonthly * 0.90 * 3),
+      savingsPct: 10,
+      popular: false
+    },
+    {
+      id: '6m',
+      label: '6 Months',
+      months: 6,
+      tag: 'Most Popular',
+      monthlyRate: Math.round(baseMonthly * 0.80),
+      totalRent: Math.round(baseMonthly * 0.80 * 6),
+      savingsPct: 20,
+      popular: true
+    },
+    {
+      id: '12m',
+      label: '12+ Months',
+      months: 12,
+      tag: 'Best Value / Max Savings',
+      monthlyRate: Math.round(baseMonthly * 0.65),
+      totalRent: Math.round(baseMonthly * 0.65 * 12),
+      savingsPct: 35,
+      popular: false
+    }
+  ];
+
+  return {
+    baseMonthly,
+    dailyRate,
+    refundableDeposit,
+    tenures,
+    perks: [
+      '100% Refundable Security Deposit',
+      'Free Doorstep Delivery & White-Glove Setup',
+      'Free Annual Relocation Across 5 Metros',
+      'Zero Maintenance & Free Periodic Servicing',
+      'SafeShield Damage Protection Included'
+    ]
+  };
+}
+
+/**
  * Calculates multi-retailer live prices, detects the lowest market rate,
  * generates direct product links, and computes the Rent-vs-Buy decision
  * based on user's required duration.
@@ -23,6 +151,7 @@ export function getLiveRetailComparison(product, durationDays = 7) {
   const flipkartPrice = Number(product.flipkartPrice) || Math.round(baseBuyPrice * 1.01);
   const cromaPrice = Number(product.cromaPrice) || Math.round(baseBuyPrice * 1.04);
   const reliancePrice = Number(product.reliancePrice) || Math.round(baseBuyPrice * 1.045);
+  const vijaySalesPrice = Number(product.vijaySalesPrice) || Math.round(baseBuyPrice * 1.035);
 
   const encodedQuery = encodeURIComponent(product.name || 'gadgets');
 
@@ -71,6 +200,17 @@ export function getLiveRetailComparison(product, durationDays = 7) {
       tag: 'ResQ Warranty Available',
       badge: 'Retail Chain',
       logoColor: '#E42529'
+    },
+    {
+      id: 'vijaysales',
+      name: 'Vijay Sales',
+      shortName: 'Vijay Sales',
+      price: vijaySalesPrice,
+      url: `https://www.vijaysales.com/search/${encodedQuery}`,
+      delivery: '2-4 Days Regional Delivery',
+      tag: 'Authorized Dealer Invoice',
+      badge: 'Certified Partner',
+      logoColor: '#D32F2F'
     }
   ];
 
@@ -99,15 +239,19 @@ export function getLiveRetailComparison(product, durationDays = 7) {
     savingsVsLowest,
     savingsPct,
     title: shouldRent
-      ? '🟢 VERDICT: RENT ON RENTORA (RECOMMENDED)'
-      : '🟡 VERDICT: BUY OUTRIGHT RECOMMENDED (LONG-TERM USE)',
+      ? '🟢 VERDICT: RECOMMEND RENTING ON RENTORA'
+      : '🟡 VERDICT: RECOMMEND BUYING OUTRIGHT (LONG-TERM OWNERSHIP)',
     badgeText: shouldRent
       ? `Optimal for ${days} Day${days > 1 ? 's' : ''}`
       : `Threshold Exceeded (${breakEvenDays}d Break-Even)`,
     explanation: shouldRent
-      ? `For your ${days}-day requirement, renting costs only ${formatINR(rentalCost)}, saving you ${formatINR(savingsVsLowest)} (${savingsPct}%) compared to buying at the lowest market rate on ${lowestRetail.name} (${formatINR(lowestRetail.price)}). You get certified flight-case hardware with zero depreciation and zero storage commitment.`
+      ? `For your ${days}-day requirement, renting costs only ${formatINR(rentalCost)}, saving you ${formatINR(savingsVsLowest)} (${savingsPct}%) compared to buying at the lowest retail rate on ${lowestRetail.name} (${formatINR(lowestRetail.price)}). You get certified flight-case hardware with zero depreciation and zero storage commitment.`
       : `Since you need this device for ${days} days, the cumulative rental cost (${formatINR(rentalCost)}) meets or exceeds the lowest outright purchase price of ${formatINR(lowestRetail.price)} on ${lowestRetail.name}. Purchasing outright is more economically viable for permanent ownership.`
   };
+
+  // Historical price tracker data
+  const priceHistory = getPriceHistory(product);
+  const tenurePricing = getTenurePricing(product);
 
   return {
     product,
@@ -120,6 +264,8 @@ export function getLiveRetailComparison(product, durationDays = 7) {
     lowestRetailPrice: lowestRetail.price,
     breakEvenDays,
     verdict,
+    priceHistory,
+    tenurePricing,
     lastSynced: 'Live Sync Active (Updated 5m ago)'
   };
 }

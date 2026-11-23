@@ -3,7 +3,7 @@ const PriceAlert = require('../models/PriceAlert');
 const priceComparisonEngine = require('../services/priceComparison/PriceComparisonEngine');
 const VariantMatcher = require('../services/priceComparison/VariantMatcher');
 
-// @desc    Get Buyhatke-style multi-platform verified price comparison
+// @desc    Get smart-comparison multi-platform verified price comparison
 // @route   GET /api/price-comparison/:productId
 // @access  Public
 exports.compareProductPrices = async (req, res, next) => {

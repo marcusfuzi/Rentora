@@ -160,7 +160,7 @@ function addSlideChrome(slide, title, category = 'PROJECT DEFENSE') {
     { num: '01', title: 'Introduction & Motivation', desc: 'Hardware capital barrier & circular rental market growth' },
     { num: '02', title: 'Problem Statement & Gaps', desc: 'Financial lock-in, asymmetric pricing & rental trust deficits' },
     { num: '03', title: 'Project Objectives', desc: 'Real-time rent vs buy, aggregator matrix & 2FA security' },
-    { num: '04', title: 'Literature Survey', desc: 'Comparative study of OLX, Rentomojo, Amazon & Flipkart' },
+    { num: '04', title: 'Literature Survey', desc: 'Comparative study of OLX, Legacy Rental Platforms, Amazon & Flipkart' },
     { num: '05', title: 'System Architecture', desc: '4-Tier modular design: UI, REST APIs, Auth, Persistence' },
     { num: '06', title: 'Rent vs Buy Math Engine', desc: 'Break-even formulas, tenure discount model & algorithms' },
     { num: '07', title: 'Price Comparison Aggregator', desc: 'Live Amazon/Flipkart SKU normalization & savings logic' },
@@ -377,7 +377,7 @@ function addSlideChrome(slide, title, category = 'PROJECT DEFENSE') {
   const headers = [
     { text: 'Platform Feature', options: { bold: true, fill: C.tableHeader, color: C.white, align: 'left' } },
     { text: 'OLX / Quikr', options: { bold: true, fill: C.tableHeader, color: C.white, align: 'center' } },
-    { text: 'Rentomojo', options: { bold: true, fill: C.tableHeader, color: C.white, align: 'center' } },
+    { text: 'Legacy Rental Platforms', options: { bold: true, fill: C.tableHeader, color: C.white, align: 'center' } },
     { text: 'Amazon / Flipkart', options: { bold: true, fill: C.tableHeader, color: C.white, align: 'center' } },
     { text: 'RENTORA (Proposed)', options: { bold: true, fill: C.tableHeader, color: C.lime, align: 'center' } }
   ];
@@ -1388,3 +1388,4 @@ pres.writeFile({ fileName: outputPath })
   .catch(err => {
     console.error('ERROR Generating Presentation:', err);
   });
+
