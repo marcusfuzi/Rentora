@@ -653,7 +653,6 @@ export function RentoraProvider({ children }) {
         resendOtp,
         resendCooldown,
         pendingAuthData,
-        quickDemoLogin,
         logout,
         // Seller
         isSellerModalOpen,
