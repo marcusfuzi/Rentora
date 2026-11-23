@@ -16,41 +16,40 @@ export function RentoraProvider({ children }) {
   // Dynamic Marketplace Products (allows sellers to list items in real-time)
   const [products, setProducts] = useState(MARKETPLACE_PRODUCTS);
 
-  // Cart & Drawer State
-  const [cart, setCart] = useState([
-    {
-      id: "prod-1-rent-demo",
-      originalId: "prod-1",
-      name: "Hasselblad X2D 100C Cinema Kit",
-      category: "Cameras & Photography",
-      image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80",
-      mode: "rent",
-      durationDays: 3,
-      unitPrice: 14500,
-      totalPrice: 43500,
-      securityDeposit: 35000,
-      location: "Mumbai, MH"
-    }
-  ]);
+  // Cart & Drawer State (clean, starts empty)
+  const [cart, setCart] = useState(() => {
+    try {
+      const saved = localStorage.getItem('rentora_cart');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return [];
+  });
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [checkoutComplete, setCheckoutComplete] = useState(false);
+
+  // Sync cart to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('rentora_cart', JSON.stringify(cart));
+    } catch {}
+  }, [cart]);
 
   // Razorpay Payment Modal State
   const [isRazorpayModalOpen, setIsRazorpayModalOpen] = useState(false);
   const [razorpayOrder, setRazorpayOrder] = useState(null);
 
   const openRazorpayCheckout = (itemOrOrder) => {
-    const defaultTotal = cart.reduce((sum, item) => sum + (item.totalPrice || 0), 0) || 43500;
-    const defaultDeposit = cart.reduce((sum, item) => sum + (item.securityDeposit || 0), 0) || 35000;
+    const defaultTotal = cart.reduce((sum, item) => sum + (item.totalPrice || 0), 0);
+    const defaultDeposit = cart.reduce((sum, item) => sum + (item.securityDeposit || 0), 0);
     
     const orderDetails = itemOrOrder || {
       title: "RENTORA SafeShield Equipment Lease",
       amount: defaultTotal + defaultDeposit,
       rentalCost: defaultTotal,
       securityDeposit: defaultDeposit,
-      productName: cart[0]?.name || "Hasselblad X2D 100C Cinema Kit",
-      image: cart[0]?.image || "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80",
+      productName: cart[0]?.name || "Rental Equipment",
+      image: cart[0]?.image || "",
       durationDays: cart[0]?.durationDays || 3,
       mode: cart[0]?.mode || "rent"
     };
@@ -72,19 +71,7 @@ export function RentoraProvider({ children }) {
     } catch {
       // fallback
     }
-    // Default demo logged-in user
-    return {
-      id: "cust-1",
-      name: "Aarav Patel",
-      email: "aarav.patel@creatives.io",
-      role: "customer", // 'customer' | 'seller' | 'admin'
-      phone: "+1 (555) 392-8104",
-      city: "New York, NY",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-      verified: true,
-      kycStatus: "Verified Pro Renter",
-      escrowActive: 150
-    };
+    return null;
   });
 
   // Auth Modal State
@@ -109,58 +96,33 @@ export function RentoraProvider({ children }) {
   const [comparisonProduct, setComparisonProduct] = useState(null);
 
   // Active Rentals & Orders state (Customer & Seller modules)
-  const [userRentals, setUserRentals] = useState([
-    {
-      id: "rent-101",
-      productId: "prod-3",
-      productName: "Sony FX6 Cinema Camera",
-      category: "Photography",
-      image: "https://images.unsplash.com/photo-1589872766859-247097756f9a?auto=format&fit=crop&w=800&q=80",
-      sellerName: "Apex Visuals Lab",
-      startDate: "2026-11-19",
-      returnDate: "2026-11-26",
-      durationDays: 7,
-      dailyRate: 120,
-      totalRentalAmount: 550,
-      securityDeposit: 120,
-      depositStatus: "Escrow Held (SafeShield)",
-      status: "Active (On Set)",
-      trackingNumber: "RNT-FEDEX-99201",
-      carrier: "FedEx Priority Secure Flight-Case"
-    },
-    {
-      id: "rent-102",
-      productId: "prod-4",
-      productName: "PlayStation 5 Pro 8K",
-      category: "Gaming",
-      image: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=800&q=80",
-      sellerName: "NexGen Gaming Hub",
-      startDate: "2026-11-10",
-      returnDate: "2026-11-17",
-      durationDays: 7,
-      dailyRate: 32,
-      totalRentalAmount: 140,
-      securityDeposit: 50,
-      depositStatus: "Refunded to Original Card",
-      status: "Completed & Returned",
-      trackingNumber: "RNT-DHL-44810",
-      carrier: "DHL Express"
-    }
-  ]);
+  const [userRentals, setUserRentals] = useState(() => {
+    try {
+      const saved = localStorage.getItem('rentora_user_rentals');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return [];
+  });
 
-  const [userOrders, setUserOrders] = useState([
-    {
-      id: "ord-881",
-      productId: "prod-8",
-      productName: "Apple Studio Display 27\" 5K",
-      image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80",
-      sellerName: "Silicon Studio Gear",
-      price: 1599,
-      purchaseDate: "2026-11-05",
-      status: "Delivered",
-      warranty: "1-Yr Apple Care + Rentora Verified Guarantee"
-    }
-  ]);
+  const [userOrders, setUserOrders] = useState(() => {
+    try {
+      const saved = localStorage.getItem('rentora_user_orders');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return [];
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('rentora_user_rentals', JSON.stringify(userRentals));
+    } catch {}
+  }, [userRentals]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('rentora_user_orders', JSON.stringify(userOrders));
+    } catch {}
+  }, [userOrders]);
 
   // Toast Notification System
   const [toasts, setToasts] = useState([]);
@@ -425,69 +387,6 @@ export function RentoraProvider({ children }) {
     });
   };
 
-  const quickDemoLogin = (role) => {
-    let demoUser;
-    if (role === 'seller') {
-      demoUser = {
-        id: 'seller-1',
-        name: 'Apex Visuals Lab',
-        email: 'seller@rentora.com',
-        role: 'seller',
-        phone: '+1 (415) 890-1122',
-        city: 'San Francisco, CA',
-        businessName: 'Apex Visuals Lab Studio Gear',
-        gstin: '29ABCDE1234F1Z5',
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
-        verified: true,
-        kycStatus: 'Verified Pro Gear Partner',
-        rating: 4.98,
-        activeListingsCount: 8,
-        totalEarnings: 14850
-      };
-    } else if (role === 'admin') {
-      demoUser = {
-        id: 'admin-1',
-        name: 'Rentora Global Admin',
-        email: 'admin@rentora.com',
-        role: 'admin',
-        phone: '+1 (800) 555-RENT',
-        city: 'Rentora Headquarters, NY',
-        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
-        verified: true,
-        kycStatus: 'Executive Admin',
-        rating: 5.0
-      };
-    } else {
-      demoUser = {
-        id: 'cust-1',
-        name: 'Aarav Patel',
-        email: 'aarav.patel@creatives.io',
-        role: 'customer',
-        phone: '+1 (555) 392-8104',
-        city: 'New York, NY',
-        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-        verified: true,
-        kycStatus: 'Verified Pro Renter',
-        rating: 4.95,
-        escrowActive: 150
-      };
-    }
-
-    setCurrentUser(demoUser);
-    try {
-      localStorage.setItem('rentora_user_session', JSON.stringify(demoUser));
-    } catch {
-      // ignore
-    }
-
-    setIsAuthModalOpen(false);
-    addToast({
-      type: 'success',
-      title: 'Demo Switched',
-      message: `Active session: ${demoUser.name} (${demoUser.role.toUpperCase()})`
-    });
-  };
-
   const logout = () => {
     setCurrentUser(null);
     try {
@@ -523,8 +422,8 @@ export function RentoraProvider({ children }) {
       features: newProduct.features || ['Factory Calibrated', 'Pelican Air Hardcase Included', 'Full Insurance Coverage'],
       securityDeposit: Number(newProduct.securityDeposit) || 100,
       seller: {
-        id: currentUser?.id || 'seller-1',
-        name: currentUser?.name || 'Apex Visuals Lab',
+        id: currentUser?.id || 'seller-partner',
+        name: currentUser?.name || 'Verified Equipment Partner',
         city: currentUser?.city || selectedLocation,
         rating: 5.0,
         verified: true

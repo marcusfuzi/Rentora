@@ -11,7 +11,6 @@ export default function UserDashboardModal() {
     userRentals,
     userOrders,
     returnRentalItem,
-    quickDemoLogin,
     setIsSellerModalOpen
   } = useRentora();
 
@@ -216,7 +215,7 @@ export default function UserDashboardModal() {
                         Delivered on {order.purchaseDate} • {order.warranty}
                       </p>
                       <p className="text-xs font-mono font-bold text-[#183D2B] mt-1">
-                        Outright Purchase: ${order.price.toLocaleString()}
+                        Outright Purchase: ₹{Number(order.price).toLocaleString('en-IN')}
                       </p>
                     </div>
                   </div>
@@ -272,31 +271,6 @@ export default function UserDashboardModal() {
               </div>
             </div>
           )}
-
-          {/* Role Switcher Footer for smooth pair programming / testing */}
-          <div className="pt-6 border-t border-[#183D2B]/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-            <span className="text-slate-500">Switch Demo Role (no re-login required):</span>
-            <div className="flex gap-2">
-              <button
-                onClick={() => quickDemoLogin('customer')}
-                className="px-3 py-1 rounded-lg bg-white border border-slate-300 hover:border-[#183D2B] font-semibold text-[#183D2B] cursor-pointer"
-              >
-                Customer Portal
-              </button>
-              <button
-                onClick={() => quickDemoLogin('seller')}
-                className="px-3 py-1 rounded-lg bg-white border border-slate-300 hover:border-[#183D2B] font-semibold text-[#183D2B] cursor-pointer"
-              >
-                Seller Portal
-              </button>
-              <button
-                onClick={() => quickDemoLogin('admin')}
-                className="px-3 py-1 rounded-lg bg-white border border-slate-300 hover:border-[#183D2B] font-semibold text-[#183D2B] cursor-pointer"
-              >
-                Admin Access
-              </button>
-            </div>
-          </div>
 
         </div>
 

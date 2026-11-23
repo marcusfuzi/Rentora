@@ -29,7 +29,7 @@ export default function RazorpayModal() {
 
   const [paymentStep, setPaymentStep] = useState('review'); // 'review' | 'processing' | 'success'
   const [paymentMethod, setPaymentMethod] = useState('upi'); // 'upi' | 'card' | 'netbanking'
-  const [upiId, setUpiId] = useState(currentUser?.email ? currentUser.email.split('@')[0] + '@oksbi' : 'creative@okaxis');
+  const [upiId, setUpiId] = useState(currentUser?.email ? currentUser.email.split('@')[0] + '@oksbi' : 'rentora.pay@okaxis');
   const [successData, setSuccessData] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -95,7 +95,7 @@ export default function RazorpayModal() {
             razorpay_signature: 'simulated_test_signature',
             amount: totalAmount,
             method: paymentMethod.toUpperCase(),
-            customerName: currentUser?.name || 'Verified Creative'
+            customerName: currentUser?.name || 'Customer'
           })
         });
 
@@ -169,9 +169,9 @@ export default function RazorpayModal() {
           setLoading(false);
         },
         prefill: {
-          name: currentUser?.name || 'Aarav Patel',
-          email: currentUser?.email || 'customer@rentora.com',
-          contact: currentUser?.phone || '+91 9876543210'
+          name: currentUser?.name || '',
+          email: currentUser?.email || '',
+          contact: currentUser?.phone || ''
         },
         theme: {
           color: '#183D2B'

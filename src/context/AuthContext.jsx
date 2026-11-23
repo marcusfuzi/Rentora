@@ -18,25 +18,15 @@ export function AuthProvider({ children }) {
           const data = await api.getMe();
           setUser(data.user);
         } catch (err) {
-          console.warn('Session expired or invalid, auto-logging into demo customer:', err);
-          autoLoginDemoCustomer();
+          console.warn('Session expired or invalid:', err);
+          setUser(null);
+          setToken(null);
+          localStorage.removeItem('rentora_token');
         } finally {
           setLoading(false);
         }
       } else {
-        autoLoginDemoCustomer();
-      }
-    }
-
-    async function autoLoginDemoCustomer() {
-      try {
-        const data = await api.demoSwitchRole('customer');
-        setToken(data.token);
-        setUser(data.user);
-        localStorage.setItem('rentora_token', data.token);
-      } catch (e) {
-        console.error('Demo auto-login failed:', e);
-      } finally {
+        setUser(null);
         setLoading(false);
       }
     }

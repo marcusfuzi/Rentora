@@ -44,18 +44,6 @@ function loadStore() {
   // Initial seed
   const defaultUsers = [
     {
-      id: 'cust-1',
-      name: 'Aarav Patel',
-      email: 'customer@rentora.com',
-      passwordHash: bcrypt.hashSync('password123', 8),
-      role: 'customer',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-      phone: '+91 98765 43210',
-      city: 'Mumbai, MH',
-      kycStatus: 'Verified',
-      savedProducts: ['prod-1', 'prod-3']
-    },
-    {
       id: 'seller-1',
       name: 'Apex Visuals Lab',
       email: 'seller@rentora.com',
@@ -83,85 +71,9 @@ function loadStore() {
     }
   ];
 
-  const defaultRentals = [
-    {
-      id: 'rent-101',
-      productId: 'prod-1',
-      productName: 'Sony Alpha A7 IV Mirrorless Camera (Body)',
-      productImage: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1000&q=80',
-      customerId: 'cust-1',
-      customerName: 'Aarav Patel',
-      sellerId: 'seller-1',
-      sellerName: 'Apex Visuals Lab',
-      startDate: new Date(Date.now() - 2 * 24 * 3600 * 1000).toISOString().split('T')[0],
-      returnDate: new Date(Date.now() + 5 * 24 * 3600 * 1000).toISOString().split('T')[0],
-      durationDays: 7,
-      rentalPricePerDay: 1200,
-      totalRentalAmount: 8400,
-      securityDeposit: 15000,
-      grandTotal: 23400,
-      depositStatus: 'Escrow Held (SafeShield)',
-      status: 'Active',
-      deliveryAddress: 'Flat 402, Sea Green Heights, Bandra West, Mumbai 400050',
-      paymentMethod: 'UPI (Simulated)',
-      createdAt: new Date(Date.now() - 2 * 24 * 3600 * 1000).toISOString()
-    },
-    {
-      id: 'rent-102',
-      productId: 'prod-3',
-      productName: 'Sony PlayStation 5 Pro Gaming Console Bundle',
-      productImage: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=1000&q=80',
-      customerId: 'cust-1',
-      customerName: 'Aarav Patel',
-      sellerId: 'seller-1',
-      sellerName: 'Apex Visuals Lab',
-      startDate: new Date(Date.now() - 10 * 24 * 3600 * 1000).toISOString().split('T')[0],
-      returnDate: new Date(Date.now() - 3 * 24 * 3600 * 1000).toISOString().split('T')[0],
-      durationDays: 7,
-      rentalPricePerDay: 750,
-      totalRentalAmount: 5250,
-      securityDeposit: 6000,
-      grandTotal: 11250,
-      depositStatus: 'Refunded',
-      status: 'Completed',
-      deliveryAddress: 'Flat 402, Sea Green Heights, Bandra West, Mumbai 400050',
-      paymentMethod: 'Credit Card (Simulated)',
-      createdAt: new Date(Date.now() - 10 * 24 * 3600 * 1000).toISOString()
-    }
-  ];
-
-  const defaultOrders = [
-    {
-      id: 'ord-501',
-      productId: 'prod-6',
-      productName: 'Anker Nebula Capsule 3 Laser 1080p Smart Projector',
-      productImage: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=1000&q=80',
-      customerId: 'cust-1',
-      customerName: 'Aarav Patel',
-      sellerId: 'seller-1',
-      sellerName: 'Apex Visuals Lab',
-      sellingPrice: 62000,
-      status: 'Delivered',
-      deliveryAddress: 'Flat 402, Sea Green Heights, Bandra West, Mumbai 400050',
-      paymentMethod: 'Rentora Wallet',
-      createdAt: new Date(Date.now() - 15 * 24 * 3600 * 1000).toISOString()
-    }
-  ];
-
-  const defaultDisputes = [
-    {
-      id: 'disp-1',
-      orderId: 'rent-102',
-      reporterId: 'cust-1',
-      reporterName: 'Aarav Patel',
-      role: 'customer',
-      title: 'Packaging was slightly worn',
-      description: 'The console was pristine, but the external carry box handle was loose on delivery.',
-      status: 'Resolved',
-      resolution: 'Seller noted condition; security deposit was refunded in full with ₹500 courtesy rental credit.',
-      createdAt: new Date(Date.now() - 4 * 24 * 3600 * 1000).toISOString()
-    }
-  ];
+  const defaultRentals = [];
+  const defaultOrders = [];
+  const defaultDisputes = [];
 
   const initial = {
     users: defaultUsers,

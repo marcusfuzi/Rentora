@@ -743,7 +743,7 @@ export default function AuthOtpModal() {
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="e.g. Aarav Patel"
+                      placeholder="Enter your full name"
                       className="w-full bg-black/40 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#C9F36B]"
                     />
                   </div>
@@ -924,64 +924,6 @@ export default function AuthOtpModal() {
                 </button>
               </div>
             </form>
-          )}
-
-          {/* Quick 1-Click Demo Profiles (Shown when not in OTP mode) */}
-          {!otpSent && (
-            <div className="pt-3 border-t border-white/10 space-y-2">
-              <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400 block font-bold text-center">
-                Instant One-Click Demo Profiles (Pre-filled credentials)
-              </span>
-              <div className="grid grid-cols-3 gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setEmail('customer@rentora.com');
-                    setPassword('password123');
-                    setAuthTab('login');
-                    setAuthRole('customer');
-                    setErrorMsg('');
-                    setSuccessMsg('');
-                  }}
-                  className="p-2.5 bg-white/5 border border-white/10 rounded-xl hover:border-[#C9F36B] hover:bg-white/10 text-center transition cursor-pointer"
-                >
-                  <span className="text-[11px] font-bold text-white block">Aarav (Renter)</span>
-                  <span className="text-[9px] text-[#C9F36B]">Customer Login</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setEmail('seller@rentora.com');
-                    setPassword('password123');
-                    setAuthTab('login');
-                    setAuthRole('seller');
-                    setErrorMsg('');
-                    setSuccessMsg('');
-                  }}
-                  className="p-2.5 bg-white/5 border border-white/10 rounded-xl hover:border-[#C9F36B] hover:bg-white/10 text-center transition cursor-pointer"
-                >
-                  <span className="text-[11px] font-bold text-white block">Apex Visuals</span>
-                  <span className="text-[9px] text-[#C9F36B]">Seller Login</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setEmail('admin@rentora.com');
-                    setPassword('password123');
-                    setAuthTab('login');
-                    setAuthRole('admin');
-                    setErrorMsg('');
-                    setSuccessMsg('');
-                  }}
-                  className="p-2.5 bg-white/5 border border-white/10 rounded-xl hover:border-[#C9F36B] hover:bg-white/10 text-center transition cursor-pointer"
-                >
-                  <span className="text-[11px] font-bold text-white block">Rentora HQ</span>
-                  <span className="text-[9px] text-[#C9F36B]">Admin Login</span>
-                </button>
-              </div>
-            </div>
           )}
 
         </div>

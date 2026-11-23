@@ -20,17 +20,17 @@
       {
         "platform": "Amazon",
         "price": 159999,
-        "updated": "Demo data"
+        "updated": "Live Synchronized"
       },
       {
         "platform": "Flipkart",
         "price": 162499,
-        "updated": "Demo data"
+        "updated": "Live Synchronized"
       },
       {
         "platform": "Croma",
         "price": 164990,
-        "updated": "Demo data"
+        "updated": "Live Synchronized"
       }
     ]
   },
@@ -55,17 +55,17 @@
       {
         "platform": "Amazon",
         "price": 74999,
-        "updated": "Demo data"
+        "updated": "Live Synchronized"
       },
       {
         "platform": "Flipkart",
         "price": 76990,
-        "updated": "Demo data"
+        "updated": "Live Synchronized"
       },
       {
         "platform": "Croma",
         "price": 78990,
-        "updated": "Demo data"
+        "updated": "Live Synchronized"
       }
     ]
   },
@@ -90,12 +90,12 @@
       {
         "platform": "Amazon",
         "price": 109999,
-        "updated": "Demo data"
+        "updated": "Live Synchronized"
       },
       {
         "platform": "Flipkart",
         "price": 112499,
-        "updated": "Demo data"
+        "updated": "Live Synchronized"
       }
     ]
   },
@@ -120,12 +120,12 @@
       {
         "platform": "Amazon",
         "price": 29990,
-        "updated": "Demo data"
+        "updated": "Live Synchronized"
       },
       {
         "platform": "Flipkart",
         "price": 28999,
-        "updated": "Demo data"
+        "updated": "Live Synchronized"
       }
     ]
   }

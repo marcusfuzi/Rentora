@@ -1,21 +1,6 @@
 {
   "users": [
     {
-      "id": "cust-1",
-      "name": "Aarav Patel",
-      "email": "customer@rentora.com",
-      "passwordHash": "$2b$08$F90YradBYJX8/hbaEjytaeWLCDAqIN2kFO348tXbqQYPzP/hfkrSm",
-      "role": "customer",
-      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-      "phone": "+91 98765 43210",
-      "city": "Mumbai, MH",
-      "kycStatus": "Verified",
-      "savedProducts": [
-        "prod-1",
-        "prod-3"
-      ]
-    },
-    {
       "id": "seller-1",
       "name": "Apex Visuals Lab",
       "email": "seller@rentora.com",
@@ -40,50 +25,6 @@
       "phone": "+91 98111 22334",
       "city": "Headquarters, Bengaluru",
       "kycStatus": "Verified"
-    },
-    {
-      "id": "cust-1795269095798",
-      "name": "Test",
-      "email": "test@rentora.com",
-      "role": "customer",
-      "phone": "+1 (555) 789-0123",
-      "city": "New York, NY",
-      "businessName": "",
-      "kycStatus": "Verified Pro Renter",
-      "verified": true,
-      "rating": 5,
-      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-      "savedProducts": []
-    },
-    {
-      "id": "cust-1795385803672",
-      "name": "randomuser",
-      "email": "randomuser@gmail.com",
-      "passwordHash": "$2b$08$vgFr/0tjfK473EFkp4dFyOrGwBtWdsoaNx.zq9oWFQuwjWAWg40Bm",
-      "role": "customer",
-      "phone": "+91 99000 00000",
-      "city": "New York, NY",
-      "businessName": "",
-      "gstin": "",
-      "kycStatus": "Verified Pro Renter",
-      "verified": true,
-      "rating": 5,
-      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-      "savedProducts": []
-    },
-    {
-      "id": "cust-1795385817081",
-      "name": "anynewemail",
-      "email": "anynewemail@gmail.com",
-      "passwordHash": "$2b$08$lfMMh5MF.xCyRHnolUMwHOJGu2.gKNnbbg/j1fJfQtCGCDVF6Rok.",
-      "role": "customer",
-      "phone": "+91 99000 00000",
-      "city": "Delhi, India",
-      "kycStatus": "Verified Pro Renter",
-      "verified": true,
-      "rating": 5,
-      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-      "savedProducts": []
     }
   ],
   "products": [
@@ -787,143 +728,8 @@
       ]
     }
   ],
-  "rentals": [
-    {
-      "id": "rent-101",
-      "productId": "prod-1",
-      "productName": "Sony Alpha A7 IV Mirrorless Camera (Body)",
-      "productImage": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1000&q=80",
-      "customerId": "cust-1",
-      "customerName": "Aarav Patel",
-      "sellerId": "seller-1",
-      "sellerName": "Apex Visuals Lab",
-      "startDate": "2026-10-29",
-      "returnDate": "2026-11-05",
-      "durationDays": 7,
-      "rentalPricePerDay": 1200,
-      "totalRentalAmount": 8400,
-      "securityDeposit": 15000,
-      "grandTotal": 23400,
-      "depositStatus": "Escrow Held (SafeShield)",
-      "status": "Active",
-      "deliveryAddress": "Flat 402, Sea Green Heights, Bandra West, Mumbai 400050",
-      "paymentMethod": "UPI (Simulated)",
-      "createdAt": "2026-10-29T12:58:26.060Z"
-    },
-    {
-      "id": "rent-102",
-      "productId": "prod-3",
-      "productName": "Sony PlayStation 5 Pro Gaming Console Bundle",
-      "productImage": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=1000&q=80",
-      "customerId": "cust-1",
-      "customerName": "Aarav Patel",
-      "sellerId": "seller-1",
-      "sellerName": "Apex Visuals Lab",
-      "startDate": "2026-10-21",
-      "returnDate": "2026-10-28",
-      "durationDays": 7,
-      "rentalPricePerDay": 750,
-      "totalRentalAmount": 5250,
-      "securityDeposit": 6000,
-      "grandTotal": 11250,
-      "depositStatus": "Refunded",
-      "status": "Completed",
-      "deliveryAddress": "Flat 402, Sea Green Heights, Bandra West, Mumbai 400050",
-      "paymentMethod": "Credit Card (Simulated)",
-      "createdAt": "2026-10-21T12:58:26.060Z"
-    }
-  ],
-  "orders": [
-    {
-      "id": "ord-501",
-      "productId": "prod-6",
-      "productName": "Anker Nebula Capsule 3 Laser 1080p Smart Projector",
-      "productImage": "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=1000&q=80",
-      "customerId": "cust-1",
-      "customerName": "Aarav Patel",
-      "sellerId": "seller-1",
-      "sellerName": "Apex Visuals Lab",
-      "sellingPrice": 62000,
-      "status": "Delivered",
-      "deliveryAddress": "Flat 402, Sea Green Heights, Bandra West, Mumbai 400050",
-      "paymentMethod": "Rentora Wallet",
-      "createdAt": "2026-10-16T12:58:26.060Z"
-    }
-  ],
-  "disputes": [
-    {
-      "id": "disp-1",
-      "orderId": "rent-102",
-      "reporterId": "cust-1",
-      "reporterName": "Aarav Patel",
-      "role": "customer",
-      "title": "Packaging was slightly worn",
-      "description": "The console was pristine, but the external carry box handle was loose on delivery.",
-      "status": "Resolved",
-      "resolution": "Seller noted condition; security deposit was refunded in full with ₹500 courtesy rental credit.",
-      "createdAt": "2026-10-27T12:58:26.060Z"
-    }
-  ],
-  "payments": [
-    {
-      "id": "pay_test_887910",
-      "orderId": "order_1795354599290_vpwyckp",
-      "paymentId": "pay_test_887910",
-      "amount": 43500,
-      "currency": "INR",
-      "status": "Captured",
-      "verified": true,
-      "method": "Razorpay Gateway (UPI/Card/Netbanking)",
-      "customerName": "Tushar Singh Bisht",
-      "timestamp": "2026-11-22T13:36:47.314Z"
-    },
-    {
-      "id": "pay_mwrvwcwp_gc6b9",
-      "orderId": "order_1795354808026_is4k2a8",
-      "paymentId": "pay_mwrvwcwp_gc6b9",
-      "amount": 10850,
-      "currency": "INR",
-      "status": "Captured",
-      "verified": true,
-      "method": "UPI",
-      "customerName": "Verified Creative",
-      "timestamp": "2026-11-22T13:40:09.441Z"
-    },
-    {
-      "id": "pay_mwrvwkr6_71u5f",
-      "orderId": "order_1795354818197_djng9xy",
-      "paymentId": "pay_mwrvwkr6_71u5f",
-      "amount": 43500,
-      "currency": "INR",
-      "status": "Captured",
-      "verified": true,
-      "method": "UPI",
-      "customerName": "Aarav Patel",
-      "timestamp": "2026-11-22T13:40:19.609Z"
-    },
-    {
-      "id": "pay_mwrwcp6x_2fb0y",
-      "orderId": "order_1795355570426_49rouo4",
-      "paymentId": "pay_mwrwcp6x_2fb0y",
-      "amount": 78500,
-      "currency": "INR",
-      "status": "Captured",
-      "verified": true,
-      "method": "UPI",
-      "customerName": "Aarav Patel",
-      "timestamp": "2026-11-22T13:52:51.857Z"
-    },
-    {
-      "id": "pay_mwry4itx_r3gs3",
-      "orderId": "order_1795358548166_9jgmfok",
-      "paymentId": "pay_mwry4itx_r3gs3",
-      "amount": 100000,
-      "currency": "INR",
-      "status": "Captured",
-      "verified": true,
-      "method": "UPI",
-      "customerName": "Aarav Patel",
-      "timestamp": "2026-11-22T14:42:29.600Z"
-    }
-  ]
+  "rentals": [],
+  "orders": [],
+  "disputes": [],
+  "payments": []
 }
