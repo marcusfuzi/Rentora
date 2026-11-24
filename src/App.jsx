@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { RentoraProvider } from './context/RentoraContext';
 import { initLenis } from './utils/smoothScroll';
 import HeaderNav from './components/HeaderNav';
+import CategoryQuickNav from './components/CategoryQuickNav';
 import CinematicHero from './components/CinematicHero';
 import ScrollStoryHorizontal from './components/ScrollStoryHorizontal';
 import CategoryTakeovers from './components/CategoryTakeovers';
@@ -43,6 +44,9 @@ function AppContent() {
       <main className="w-full overflow-hidden">
         {/* 1. Cinematic Hero Section (Cream palette, Flagship switcher, Razorpay) */}
         <CinematicHero />
+
+        {/* 1.1 Category Quick Chips & 4 Core Rental Guarantees Strip */}
+        <CategoryQuickNav />
 
         {/* 2. Scroll-Driven Product Film (Horizontal scrub with manual controls) */}
         <ScrollStoryHorizontal />

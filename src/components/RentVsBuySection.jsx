@@ -40,7 +40,8 @@ export default function RentVsBuySection() {
     lowestRetailPrice,
     breakEvenDays,
     verdict,
-    retailOptions
+    retailOptions,
+    priceHistory
   } = comparison;
 
   const savings = Math.max(0, lowestRetailPrice - calculatedRentalCost);
@@ -355,7 +356,7 @@ export default function RentVsBuySection() {
 
             {/* Live Indian Marketplace Parity Rows with Outbound Links */}
             <div className="space-y-2 text-xs font-mono">
-              {retailOptions.slice(0, 3).map((opt) => {
+              {retailOptions.map((opt) => {
                 const isLowest = opt.id === lowestRetail.id;
                 return (
                   <div
@@ -411,6 +412,104 @@ export default function RentVsBuySection() {
             </a>
           </div>
         </div>
+
+        {/* 6-Month Historical Price Tracker Graph (Embedded Directly on Homepage) */}
+        {priceHistory && (
+          <div className="max-w-7xl mx-auto p-6 sm:p-8 bg-white rounded-3xl border border-[#183D2B]/15 shadow-sm space-y-5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#183D2B]/10 pb-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#183D2B] text-[#C9F36B] text-[10px] font-mono font-bold uppercase">
+                    RENTORA SMARTPRICE™ TRACKER
+                  </span>
+                  <span className="text-xs font-mono text-emerald-800 font-bold">
+                    6-Month Historical Price Trajectory
+                  </span>
+                </div>
+                <h4 className="font-serif font-black text-xl sm:text-2xl text-[#121512] mt-1">
+                  {currentGear.name} Price Tracking Across Amazon & Flipkart
+                </h4>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => openComparisonModal(currentGear)}
+                className="px-4 py-2 rounded-xl bg-[#183D2B] text-[#C9F36B] font-mono text-xs font-bold transition hover:bg-[#121512] flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
+              >
+                <span>Set Price Alert & Compare All</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Quick Metrics Bar */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
+              <div className="p-3.5 bg-[#F5F5EF] rounded-2xl border border-[#183D2B]/10 space-y-1">
+                <span className="text-[10px] text-slate-500 uppercase block">Current Lowest Price</span>
+                <div className="text-lg font-black text-[#183D2B]">{formatINR(priceHistory.currentPrice)}</div>
+                <span className="text-[10px] text-emerald-700 font-bold">Verified Today</span>
+              </div>
+
+              <div className="p-3.5 bg-[#F5F5EF] rounded-2xl border border-[#183D2B]/10 space-y-1">
+                <span className="text-[10px] text-slate-500 uppercase block">All-Time Lowest Rate</span>
+                <div className="text-lg font-black text-emerald-800">{formatINR(priceHistory.allTimeLow)}</div>
+                <span className="text-[10px] text-slate-500">During Festive Sale</span>
+              </div>
+
+              <div className="p-3.5 bg-[#F5F5EF] rounded-2xl border border-[#183D2B]/10 space-y-1">
+                <span className="text-[10px] text-slate-500 uppercase block">All-Time Peak Price</span>
+                <div className="text-lg font-black text-rose-700">{formatINR(priceHistory.allTimeHigh)}</div>
+                <span className="text-[10px] text-slate-500">Launch Price</span>
+              </div>
+
+              <div className="p-3.5 bg-[#F5F5EF] rounded-2xl border border-[#183D2B]/10 space-y-1">
+                <span className="text-[10px] text-slate-500 uppercase block">Price Drop from Peak</span>
+                <div className="text-lg font-black text-emerald-700">-{priceHistory.priceDropPct}%</div>
+                <span className="text-[10px] text-slate-500">Save {formatINR(priceHistory.priceDropFromHigh)}</span>
+              </div>
+            </div>
+
+            {/* Visual Bar Columns */}
+            <div className="pt-4">
+              <div className="h-40 w-full flex items-end justify-between gap-3 px-4 border-b border-slate-200">
+                {priceHistory.historyPoints.map((pt, pIdx) => {
+                  const range = priceHistory.allTimeHigh - priceHistory.allTimeLow || 1;
+                  const heightPct = Math.round(((pt.price - priceHistory.allTimeLow) / range) * 55) + 35;
+                  const isCurrent = pIdx === priceHistory.historyPoints.length - 1;
+                  const isMin = pt.price === priceHistory.allTimeLow;
+
+                  return (
+                    <div key={pIdx} className="flex-1 flex flex-col items-center gap-1 group relative">
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-8 bg-[#183D2B] text-[#C9F36B] text-[10px] font-mono font-bold py-0.5 px-2 rounded pointer-events-none whitespace-nowrap z-20 shadow-md">
+                        {formatINR(pt.price)}
+                      </div>
+
+                      <div
+                        style={{ height: `${heightPct}%` }}
+                        className={`w-full max-w-[48px] rounded-t-lg transition-all ${
+                          isCurrent
+                            ? 'bg-gradient-to-t from-[#183D2B] to-[#C9F36B] shadow-md'
+                            : isMin
+                            ? 'bg-emerald-400'
+                            : 'bg-[#183D2B]/25 hover:bg-[#183D2B]/50'
+                        }`}
+                      />
+
+                      <span className="text-[11px] font-mono text-[#121512]/70 font-bold mt-1">
+                        {pt.month}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="flex justify-between items-center text-[11px] font-mono text-slate-500 pt-2 px-2">
+                <span>Month 1 (Launch)</span>
+                <span className="font-bold text-emerald-700">Festive Dip: {formatINR(priceHistory.allTimeLow)}</span>
+                <span className="font-bold text-[#183D2B]">Today: {formatINR(priceHistory.currentPrice)}</span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
