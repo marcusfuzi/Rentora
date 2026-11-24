@@ -7,7 +7,7 @@
     "start": "node server/index.js",
     "backend": "node server/index.js",
     "server": "node server/index.js",
-    "seed": "node backend/utils/seeder.js",
+    "seed": "node server/index.js",
     "dev": "concurrently \"node server/index.js\" \"vite\"",
     "client": "vite",
     "build": "vite build",
