@@ -462,7 +462,7 @@ export default function AuthOtpModal() {
 
                 <div>
                   <label className="text-xs font-bold text-white block mb-1">
-                    Registered Email Address * (Jo Gmail daale usme OTP jaata hai)
+                    Registered Email Address *
                   </label>
                   <div className="relative">
                     <Mail className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
@@ -562,7 +562,7 @@ export default function AuthOtpModal() {
                 {/* New Password Input */}
                 <div>
                   <label className="text-xs font-bold text-white block mb-1">
-                    Naya Password (Minimum 6 characters) *
+                    New Password *
                   </label>
                   <div className="relative">
                     <Lock className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
@@ -588,7 +588,7 @@ export default function AuthOtpModal() {
                 {/* Confirm New Password Input */}
                 <div>
                   <label className="text-xs font-bold text-white block mb-1">
-                    Confirm Naya Password *
+                    Confirm New Password *
                   </label>
                   <div className="relative">
                     <Lock className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
@@ -645,7 +645,7 @@ export default function AuthOtpModal() {
               {/* Email Input with strict validation */}
               <div>
                 <label className="text-xs font-bold text-white block mb-1">
-                  Email Address * (Jo Gmail daale usme OTP jaata hai)
+                  Email Address *
                 </label>
                 <div className="relative">
                   <Mail className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
@@ -670,7 +670,7 @@ export default function AuthOtpModal() {
               <div>
                 <div className="flex items-center justify-between mb-1">
                   <label className="text-xs font-bold text-white">
-                    Password * (Kam se kam 6 characters)
+                    Password *
                   </label>
                   {isLogin && (
                     <button
