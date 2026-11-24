@@ -18,6 +18,7 @@ import MarketPriceComparisonModal from './components/MarketPriceComparisonModal'
 import SellerListingModal from './components/SellerListingModal';
 import UserDashboardModal from './components/UserDashboardModal';
 import RazorpayModal from './components/RazorpayModal';
+import InvoiceModal from './components/InvoiceModal';
 import ToastBanner from './components/ToastBanner';
 
 function AppContent() {
@@ -72,6 +73,7 @@ function AppContent() {
 
       {/* Global Interactive Modals & Drawers */}
       <RazorpayModal />
+      <InvoiceModal />
       <ProductDetailModal />
       <CartDrawer />
       <AuthOtpModal />

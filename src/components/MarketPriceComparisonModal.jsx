@@ -33,13 +33,16 @@ export default function MarketPriceComparisonModal() {
     closeComparisonModal,
     openProductDetail,
     openRazorpayCheckout,
+    currentUser,
+    addPriceAlert,
+    setIsDashboardOpen,
     addToast
   } = useRentora();
 
   const [activeTab, setActiveTab] = useState('comparison'); // 'comparison' | 'history' | 'decision' | 'alert'
   const [simulatedDuration, setSimulatedDuration] = useState(7); // default 7 days
   const [targetAlertPrice, setTargetAlertPrice] = useState('');
-  const [alertEmail, setAlertEmail] = useState('');
+  const [alertEmail, setAlertEmail] = useState(currentUser?.email || '');
   const [alertSet, setAlertSet] = useState(false);
 
   if (!isComparisonModalOpen || !comparisonProduct) return null;
@@ -74,6 +77,15 @@ export default function MarketPriceComparisonModal() {
       });
       return;
     }
+    addPriceAlert({
+      productId: product.id,
+      productName: product.name,
+      image: product.image,
+      targetPrice: targetAlertPrice,
+      currentLowest: lowestRetailPrice,
+      store: lowestRetail?.shortName || 'Amazon India',
+      email: alertEmail
+    });
     setAlertSet(true);
     addToast({
       type: 'success',
@@ -606,10 +618,22 @@ export default function MarketPriceComparisonModal() {
                   </button>
                 </form>
               ) : (
-                <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-mono space-y-1">
-                  <div className="font-bold flex items-center gap-1.5 text-emerald-950">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                    <span>Price Watch Active!</span>
+                <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-mono space-y-2">
+                  <div className="font-bold flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 text-emerald-950">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                      <span>Price Watch Active & Saved to Profile!</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        closeComparisonModal();
+                        setIsDashboardOpen(true);
+                      }}
+                      className="text-[10px] uppercase font-bold text-[#183D2B] hover:underline"
+                    >
+                      View in Dashboard →
+                    </button>
                   </div>
                   <p>
                     Target threshold: <span className="font-bold">{formatINR(targetAlertPrice)}</span>. You will receive an immediate notification at <span className="underline">{alertEmail}</span> as soon as any retail platform drops to this price.

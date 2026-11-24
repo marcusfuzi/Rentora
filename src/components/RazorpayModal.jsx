@@ -15,7 +15,8 @@ import {
   ExternalLink,
   Receipt,
   FileCheck2,
-  Clock
+  Clock,
+  Package
 } from 'lucide-react';
 
 export default function RazorpayModal() {
@@ -24,6 +25,9 @@ export default function RazorpayModal() {
     closeRazorpayCheckout,
     razorpayOrder,
     currentUser,
+    confirmPaymentSuccess,
+    setIsDashboardOpen,
+    openInvoiceModal,
     addToast
   } = useRentora();
 
@@ -100,6 +104,15 @@ export default function RazorpayModal() {
         });
 
         const verifyData = await verifyRes.json();
+        const finalReceipt = verifyData.receiptNumber || `RCPT-${Math.floor(100000 + Math.random() * 900000)}`;
+        const finalPayId = verifyData.paymentId || `pay_${Date.now()}`;
+
+        // Save into User Rentals or Orders immediately
+        confirmPaymentSuccess({
+          orderDetails: razorpayOrder,
+          paymentId: finalPayId,
+          receiptNumber: finalReceipt
+        });
 
         // Success explosion
         confetti({
@@ -110,9 +123,9 @@ export default function RazorpayModal() {
         });
 
         setSuccessData({
-          paymentId: verifyData.paymentId,
+          paymentId: finalPayId,
           orderId: order?.id || `order_${Date.now()}`,
-          receiptNumber: verifyData.receiptNumber || `RCPT-${Math.floor(100000 + Math.random() * 900000)}`,
+          receiptNumber: finalReceipt,
           amount: totalAmount,
           deposit: securityDeposit,
           timestamp: new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })
@@ -150,6 +163,14 @@ export default function RazorpayModal() {
             })
           });
           const verifyData = await verifyRes.json();
+          const finalReceipt = verifyData.receiptNumber || `RCPT-LIVE-${Date.now()}`;
+
+          // Save into User Rentals or Orders immediately
+          confirmPaymentSuccess({
+            orderDetails: razorpayOrder,
+            paymentId: response.razorpay_payment_id,
+            receiptNumber: finalReceipt
+          });
 
           confetti({
             particleCount: 120,
@@ -160,7 +181,7 @@ export default function RazorpayModal() {
           setSuccessData({
             paymentId: response.razorpay_payment_id,
             orderId: response.razorpay_order_id,
-            receiptNumber: verifyData.receiptNumber || `RCPT-LIVE-${Date.now()}`,
+            receiptNumber: finalReceipt,
             amount: totalAmount,
             deposit: securityDeposit,
             timestamp: new Date().toLocaleTimeString('en-IN')
@@ -449,13 +470,49 @@ export default function RazorpayModal() {
             </div>
 
             {/* Action Buttons */}
-            <div className="pt-2 flex gap-3">
+            <div className="pt-2 flex flex-col sm:flex-row gap-2.5">
+              <button
+                type="button"
+                onClick={() => {
+                  handleClose();
+                  setIsDashboardOpen(true);
+                }}
+                className="flex-1 py-3 px-4 rounded-xl bg-[#183D2B] text-[#C9F36B] hover:bg-[#121512] font-mono font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer border border-[#C9F36B]/30"
+              >
+                <Package className="w-4 h-4" />
+                <span>View in My Dashboard</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  openInvoiceModal({
+                    orderId: successData.orderId,
+                    receiptNumber: successData.receiptNumber,
+                    paymentId: successData.paymentId,
+                    date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+                    customerName: currentUser?.name || 'Verified Renter',
+                    email: currentUser?.email || 'customer@rentora.in',
+                    productName: razorpayOrder.productName,
+                    mode: razorpayOrder.mode || 'rent',
+                    durationDays: razorpayOrder.durationDays || 30,
+                    amount: totalAmount,
+                    rentalCost: rentalCost,
+                    deposit: securityDeposit
+                  });
+                }}
+                className="py-3 px-4 rounded-xl bg-white/10 hover:bg-white/20 text-white font-mono font-bold text-xs uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-2 border border-white/15"
+              >
+                <Receipt className="w-4 h-4 text-[#C9F36B]" />
+                <span>Print Tax Invoice</span>
+              </button>
+
               <button
                 type="button"
                 onClick={handleClose}
-                className="flex-1 py-3 rounded-xl bg-[#C9F36B] hover:bg-[#b8e854] text-[#121512] font-bold text-sm tracking-wide transition-all shadow-md"
+                className="py-3 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-mono text-xs uppercase tracking-wider transition cursor-pointer"
               >
-                Done & Return to Marketplace
+                Back to Gear
               </button>
             </div>
           </div>

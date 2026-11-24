@@ -149,6 +149,16 @@ export default function HeaderNav() {
                 </button>
               </div>
 
+              {/* List Gear (Seller portal) button */}
+              <button
+                type="button"
+                onClick={() => setIsSellerModalOpen(true)}
+                className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white hover:bg-slate-100 text-[#183D2B] text-xs font-mono font-bold border border-[#183D2B]/15 transition shadow-xs cursor-pointer"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>List Gear</span>
+              </button>
+
               {/* Rental Bag Drawer Button */}
               <button
                 type="button"

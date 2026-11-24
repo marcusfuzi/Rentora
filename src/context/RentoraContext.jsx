@@ -99,18 +99,79 @@ export function RentoraProvider({ children }) {
   const [userRentals, setUserRentals] = useState(() => {
     try {
       const saved = localStorage.getItem('rentora_user_rentals');
-      if (saved) return JSON.parse(saved);
+      if (saved && JSON.parse(saved).length > 0) return JSON.parse(saved);
     } catch {}
-    return [];
+    return [
+      {
+        id: 'rent-101',
+        productId: 'sony-a7iv',
+        productName: 'Sony Alpha A7 IV Full-Frame Camera',
+        category: 'Cameras & Photography',
+        image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80',
+        sellerName: 'Rentora Certified Fleet',
+        startDate: '2026-11-20',
+        returnDate: '2026-12-20',
+        durationDays: 30,
+        dailyRate: 1500,
+        totalRentalAmount: 45000,
+        securityDeposit: 18000,
+        depositStatus: 'Escrow Held (SafeShield)',
+        status: 'Active (Dispatched)',
+        trackingNumber: 'RNT-EXP-84920',
+        carrier: 'Rentora White-Glove Courier',
+        paymentId: 'pay_rzp_live_84920',
+        receiptNumber: 'RCPT-RNT-84920'
+      }
+    ];
   });
 
   const [userOrders, setUserOrders] = useState(() => {
     try {
       const saved = localStorage.getItem('rentora_user_orders');
-      if (saved) return JSON.parse(saved);
+      if (saved && JSON.parse(saved).length > 0) return JSON.parse(saved);
     } catch {}
-    return [];
+    return [
+      {
+        id: 'ord-201',
+        productId: 'dji-rs3',
+        productName: 'DJI RS 3 Pro Gimbal Stabilizer Combo',
+        image: 'https://images.unsplash.com/photo-1589872782787-8df7d9d0e82c?auto=format&fit=crop&w=800&q=80',
+        sellerName: 'Rentora Verified Direct',
+        price: 74990,
+        purchaseDate: '2026-11-15',
+        status: 'Delivered',
+        warranty: 'Manufacturer 1-Yr + Rentora Protection',
+        trackingNumber: 'RNT-BUY-99231',
+        paymentId: 'pay_rzp_live_99231',
+        receiptNumber: 'RCPT-BUY-99231'
+      }
+    ];
   });
+
+  // Price Drop Watch Alerts
+  const [priceAlerts, setPriceAlerts] = useState(() => {
+    try {
+      const saved = localStorage.getItem('rentora_price_alerts');
+      if (saved && JSON.parse(saved).length > 0) return JSON.parse(saved);
+    } catch {}
+    return [
+      {
+        id: 'alert-1',
+        productId: 'sony-a7iv',
+        productName: 'Sony Alpha A7 IV Full-Frame Camera',
+        image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80',
+        targetPrice: 195000,
+        currentLowest: 209990,
+        store: 'Amazon India',
+        email: 'user@example.com',
+        createdDate: 'Nov 22, 2026',
+        status: 'Active Tracking'
+      }
+    ];
+  });
+
+  // Invoice & Receipt Viewer Modal
+  const [invoiceModalData, setInvoiceModalData] = useState(null);
 
   useEffect(() => {
     try {
@@ -123,6 +184,12 @@ export function RentoraProvider({ children }) {
       localStorage.setItem('rentora_user_orders', JSON.stringify(userOrders));
     } catch {}
   }, [userOrders]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('rentora_price_alerts', JSON.stringify(priceAlerts));
+    } catch {}
+  }, [priceAlerts]);
 
   // Toast Notification System
   const [toasts, setToasts] = useState([]);
@@ -490,6 +557,141 @@ export function RentoraProvider({ children }) {
     });
   };
 
+  // Extend Rental duration
+  const extendRentalItem = (rentalId, extraDays = 30) => {
+    setUserRentals(prev =>
+      prev.map(item => {
+        if (item.id === rentalId) {
+          const currentReturn = new Date(item.returnDate || Date.now());
+          const newReturn = new Date(currentReturn.getTime() + extraDays * 24 * 3600 * 1000).toISOString().split('T')[0];
+          return {
+            ...item,
+            returnDate: newReturn,
+            durationDays: (item.durationDays || 30) + extraDays,
+            status: 'Active (Extended)'
+          };
+        }
+        return item;
+      })
+    );
+    addToast({
+      type: 'success',
+      title: 'Lease Extended!',
+      message: `Rental extended by +${extraDays} days. SafeShield escrow coverage updated automatically.`
+    });
+  };
+
+  // Price Drop Watch Alerts handlers
+  const addPriceAlert = ({ productId, productName, image, targetPrice, currentLowest, store, email }) => {
+    const newAlert = {
+      id: `alert-${Date.now()}`,
+      productId: productId || `prod-${Date.now()}`,
+      productName: productName || 'Pro Production Gear',
+      image: image || 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80',
+      targetPrice: Number(targetPrice),
+      currentLowest: Number(currentLowest),
+      store: store || 'Amazon India',
+      email: email || currentUser?.email || 'user@example.com',
+      createdDate: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+      status: 'Active Tracking'
+    };
+    setPriceAlerts(prev => [newAlert, ...prev]);
+    return newAlert;
+  };
+
+  const removePriceAlert = (alertId) => {
+    setPriceAlerts(prev => prev.filter(a => a.id !== alertId));
+    addToast({
+      type: 'info',
+      title: 'Alert Removed',
+      message: 'You have stopped tracking price drops for this product.'
+    });
+  };
+
+  // Invoice handlers
+  const openInvoiceModal = (data) => {
+    setInvoiceModalData(data);
+  };
+
+  const closeInvoiceModal = () => {
+    setInvoiceModalData(null);
+  };
+
+  const clearCart = () => {
+    setCart([]);
+    try {
+      localStorage.removeItem('rentora_cart');
+    } catch {}
+  };
+
+  // Confirm payment & add to dashboard immediately
+  const confirmPaymentSuccess = ({ orderDetails, paymentId, receiptNumber }) => {
+    // 1. Ensure user session
+    let user = currentUser;
+    if (!user) {
+      user = {
+        id: `usr_${Date.now()}`,
+        name: orderDetails.customerName || 'Verified Renter',
+        email: orderDetails.email || 'customer@rentora.in',
+        role: 'customer',
+        city: selectedLocation || 'Mumbai, MH',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80',
+        kycStatus: 'KYC Verified (SafeShield Active)'
+      };
+      setCurrentUser(user);
+      try {
+        localStorage.setItem('rentora_user_session', JSON.stringify(user));
+      } catch {}
+    }
+
+    // 2. Handle Cart vs Direct item
+    if (orderDetails.isFromCart && cart.length > 0) {
+      triggerCheckoutSuccess();
+      clearCart();
+    } else {
+      const isRent = orderDetails.mode !== 'buy';
+      if (isRent) {
+        const newRental = {
+          id: `rent-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+          productId: orderDetails.productId || `prod-${Date.now()}`,
+          productName: orderDetails.productName || 'Pro Studio Hardware',
+          category: orderDetails.category || 'Professional Equipment',
+          image: orderDetails.image || 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80',
+          sellerName: 'Rentora Certified Fleet',
+          startDate: new Date().toISOString().split('T')[0],
+          returnDate: new Date(Date.now() + (orderDetails.durationDays || 30) * 24 * 3600 * 1000).toISOString().split('T')[0],
+          durationDays: orderDetails.durationDays || 30,
+          dailyRate: orderDetails.rentalCost ? Math.round(orderDetails.rentalCost / (orderDetails.durationDays || 30)) : 1500,
+          totalRentalAmount: orderDetails.rentalCost || orderDetails.amount,
+          securityDeposit: orderDetails.securityDeposit || 5000,
+          depositStatus: 'Escrow Held (SafeShield)',
+          status: 'Order Placed & Dispatched',
+          trackingNumber: `RNT-EXP-${Math.floor(10000 + Math.random() * 90000)}`,
+          carrier: 'Rentora White-Glove Courier',
+          paymentId: paymentId || `pay_${Date.now()}`,
+          receiptNumber: receiptNumber || `RCPT-${Math.floor(100000 + Math.random() * 900000)}`
+        };
+        setUserRentals(prev => [newRental, ...prev]);
+      } else {
+        const newOrder = {
+          id: `ord-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+          productId: orderDetails.productId || `prod-${Date.now()}`,
+          productName: orderDetails.productName || 'Pro Studio Hardware',
+          image: orderDetails.image || 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80',
+          sellerName: 'Rentora Verified Direct',
+          price: orderDetails.amount,
+          purchaseDate: new Date().toISOString().split('T')[0],
+          status: 'Processing Dispatch',
+          warranty: 'Manufacturer 1-Yr + Rentora Protection',
+          trackingNumber: `RNT-BUY-${Math.floor(10000 + Math.random() * 90000)}`,
+          paymentId: paymentId || `pay_${Date.now()}`,
+          receiptNumber: receiptNumber || `RCPT-${Math.floor(100000 + Math.random() * 900000)}`
+        };
+        setUserOrders(prev => [newOrder, ...prev]);
+      }
+    }
+  };
+
   // Product Detail Modal
   const openProductDetail = (product, mode = 'rent') => {
     setSelectedProduct({ ...product, initialMode: mode });
@@ -624,16 +826,22 @@ export function RentoraProvider({ children }) {
         closeProductDetail,
         addToCart,
         removeFromCart,
+        clearCart,
         calculateSubtotal,
         checkoutComplete,
         setCheckoutComplete,
         triggerCheckoutSuccess,
+        confirmPaymentSuccess,
         // Razorpay Gateway
         isRazorpayModalOpen,
         setIsRazorpayModalOpen,
         razorpayOrder,
         openRazorpayCheckout,
         closeRazorpayCheckout,
+        // Invoice
+        invoiceModalData,
+        openInvoiceModal,
+        closeInvoiceModal,
         // User Auth & OTP
         currentUser,
         isAuthModalOpen,
@@ -664,6 +872,10 @@ export function RentoraProvider({ children }) {
         userRentals,
         userOrders,
         returnRentalItem,
+        extendRentalItem,
+        priceAlerts,
+        addPriceAlert,
+        removePriceAlert,
         // Comparison
         isComparisonModalOpen,
         comparisonProduct,
